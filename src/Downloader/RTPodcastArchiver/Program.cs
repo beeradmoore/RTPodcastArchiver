@@ -18,10 +18,13 @@ var podcasts = new List<Podcast>();
 var podcastsJson = Path.Combine(basePath, "podcasts.json");
 if (File.Exists(podcastsJson))
 {
-	var tempPodcasts = JsonSerializer.Deserialize<List<Podcast>>(File.ReadAllText("podcasts.json"));
-	if (tempPodcasts != null)
+	using (var fileStream = File.OpenRead(podcastsJson))
 	{
-		podcasts.AddRange(podcasts);
+		var tempPodcasts = JsonSerializer.Deserialize<List<Podcast>>(fileStream);
+		if (tempPodcasts != null)
+		{
+			podcasts.AddRange(tempPodcasts);
+		}
 	}
 }
 else
