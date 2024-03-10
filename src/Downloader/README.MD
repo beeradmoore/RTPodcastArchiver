@@ -1,4 +1,4 @@
-# RTPodcastArhciver
+# RTPodcastArchiver
 This content is already used and archived. This repo is mostly for educational purposes.
 
 
@@ -20,6 +20,6 @@ podcasts.Add(new Podcast()
 });
 ```
 
-For any other information check the commets in `Program.cs`.
+For any other information check the comments in `Program.cs`.
 
 For any other questions or comments feel free to file an [issue](https://github.com/beeradmoore/RTPodcastArchiver/issues) on this repository.
