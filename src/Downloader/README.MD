@@ -9,7 +9,8 @@ First, the `Program.cs` source needs to be modified before you can use it.
 3. Go to https://roosterteeth.supportingcast.fm/subscription/type/podcast to get your rss links
 4. Add your rss links into `Program.cs`, there are samples where you should add this.
 5. Important!, don't commit those changes to any public repository as they are URLs specific to you.
-
+6. This will generate a `podcasts.json` in the path of your `basePath` above. 
+7. If you re-run the application it will download any new episodes using `podcasts.json` as a list of target podcasts.
 Example: 
 ```csharp
 podcasts.Add(new Podcast()

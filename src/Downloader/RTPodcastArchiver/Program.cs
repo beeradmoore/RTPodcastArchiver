@@ -12,10 +12,11 @@ if (Directory.Exists(basePath) == false)
 	Directory.CreateDirectory(basePath);
 }
 
-// Load the podcasts json which contians your user specific URLs
+// Load the podcasts.json which contains your user specific URLs
 var podcasts = new List<Podcast>();
 
-if (File.Exists("podcasts.json"))
+var podcastsJson = Path.Combine(basePath, "podcasts.json");
+if (File.Exists(podcastsJson))
 {
 	var tempPodcasts = JsonSerializer.Deserialize<List<Podcast>>(File.ReadAllText("podcasts.json"));
 	if (tempPodcasts != null)
@@ -28,8 +29,8 @@ else
 	// If you don't have any podcast URLs you need to get the RSS links from your account on
 	// https://roosterteeth.supportingcast.fm/subscription/type/podcast
 	// and then manually add the data here. This will generate a podcasts.json file in
-	// your execution folder (eg. bin/Debug/). This fill will then be used going forwards.
-	// If you want to add a new podcast you need to edit your podcasts.json folder, or delete
+	// your execution target podcast archive folder (basePath). This fill will then be used going forwards.
+	// If you want to add a new podcast you need to edit your podcasts.json file, or delete
 	// it and re-generate it with your code below.
 	/*
 	podcasts.Add(new Podcast()
@@ -42,6 +43,10 @@ else
 		Name = "Black Box Down",
 		Url = "https://roosterteeth.supportingcast.fm/content/eyXYZ.....789.rss",
 	});
+	using (var fileStream = File.Create(podcastsJson))
+	{
+		JsonSerializer.Serialize(fileStream, podcasts, new JsonSerializerOptions() { WriteIndented = true });
+	}
 	*/
 }
 
