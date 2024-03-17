@@ -37,12 +37,40 @@ class Program
 	
 	static string MakeSafeFilenameNew(string filename)
 	{
+		var originalFilename = new string(filename);
+		
 		// Special cases for podcasts that "use a format // like this"
 		filename = filename.Replace("//", "-");
+		filename = filename.Replace(" w/ ", " with ");
+		filename = filename.Replace(" / ", ", ");
+		filename = filename.Replace("/", String.Empty);
+		filename = filename.Replace("\\", String.Empty);
+		filename = filename.Replace(": ", " - ");
+		filename = filename.Replace(":", String.Empty);
+		filename = filename.Replace("*", String.Empty);
+		filename = filename.Replace("?", String.Empty);
+		filename = filename.Replace("\"", "'");
+		filename = filename.Replace("<", "[");
+		filename = filename.Replace(">", "]");
+		filename = filename.Replace(" | ", ", ");
+		filename = filename.Replace("|", String.Empty);
+		filename = filename.Replace("’", "'");
+		//filename = filename.Replace("#", String.Empty); // handled this better at the title level.
+		filename = filename.Replace("%", "percent"); // only appears once in the RT podcast archive.
+
+		if (originalFilename != filename)
+		{
+			Log.Information($"\n\nXX OLD: {originalFilename}\nXX NEW: {filename}\n\n");
+		}
+		//var cleanFileName = Regex.Replace(filename, "[^a-zA-Z0-9._\\-() ]+", String.Empty);
+		
+		return filename;
+		/*
 		
 		var cleanFileName = Regex.Replace(filename, "[^a-zA-Z0-9._\\-() ]+", String.Empty);
 		Log.Information($"{filename} -> {cleanFileName}");
 		return cleanFileName;
+		*/
 	}
 
 
@@ -322,6 +350,7 @@ class Program
 			foreach (var item in items)
 			{
 				var title = item["title"]?.InnerText.Trim();
+				var oldTitle = item["title"]?.InnerText;
 				if (String.IsNullOrEmpty(title) == true)
 				{
 					Log.Error("Title is empty.");
@@ -366,6 +395,7 @@ class Program
 
 				// Prefix is empty to start of with.
 				var episodeSeasonPrefix = String.Empty;
+				var episodeSeasonOldPrefix = String.Empty;
 
 				// If there is a season number we use it.
 				if (seasonInt >= 0)
@@ -373,11 +403,13 @@ class Program
 					// If there is an episode number we use it.
 					if (episodeInt >= 0)
 					{
-						episodeSeasonPrefix = $"S{seasonInt:00} E{episodeInt} ";
+						episodeSeasonPrefix = $"S{seasonInt:00} E{episodeInt} - ";
+						episodeSeasonOldPrefix = $"S{seasonInt:00} E{episodeInt} ";
 					}
 					else
 					{
-						episodeSeasonPrefix = $"S{seasonInt:00} ";
+						episodeSeasonPrefix = $"S{seasonInt:00} - ";
+						episodeSeasonOldPrefix = $"S{seasonInt:00} ";
 					}
 				}
 				else
@@ -385,10 +417,33 @@ class Program
 					// If there is no season number we just use the episode number if it exists.
 					if (episodeInt >= 0)
 					{
-						episodeSeasonPrefix = $"E{episodeInt} ";
+						episodeSeasonPrefix = $"E{episodeInt} - ";
+						episodeSeasonOldPrefix = $"E{episodeInt} ";
 					}
 				}
 
+				// Lets get rid of episodes with the number at the end, it isn't needed at
+				// this point, because if we got here we have an E[number] to put at the start.
+				if (episodeInt >= 0)
+				{
+					var stringTitleReplacements = new string[]
+					{
+						$" - {episodeInt}",
+						$" - #{episodeInt}",
+						$" - [{episodeInt}]",
+						$" [{episodeInt}]",
+					};
+
+					foreach (var stringTitleReplacement in stringTitleReplacements)
+					{
+						if (title.Contains(stringTitleReplacement))
+						{
+							title = title.Replace(stringTitleReplacement, string.Empty);
+						}
+					}
+				}
+				
+				
 				// We also want to get the publish date as this is what we prefix episode files with.
 				var pubDateString = item.SelectSingleNode("pubDate")?.InnerText;
 				if (String.IsNullOrEmpty(pubDateString) == true)
@@ -420,15 +475,16 @@ class Program
 				// 2021-03-28 - E271 Yep that was good to (b8a112d6-4b8b-42f0-9389-d7d22419dc5f).mp3
 				// 2021-03-29 - That one where we all cried (b8a112d6-4b8b-42f0-9389-d7d22419dc5f).mp3
 				var enclosureExtension = Path.GetExtension(enclosureUri.AbsolutePath);
-				var episodeFilenameOld = MakeSafeFilenameOld($"{pubDate:yyyy-MM-dd} - {episodeSeasonPrefix}{title}{enclosureExtension}", '-');
+				var episodeFilenameOld = MakeSafeFilenameOld($"{pubDate:yyyy-MM-dd} - {episodeSeasonOldPrefix}{oldTitle}{enclosureExtension}", '-');
 				var episodeFilename = MakeSafeFilenameNew($"{pubDate:yyyy-MM-dd} - {episodeSeasonPrefix}{title} ({guid}){enclosureExtension}");
-
-
+				
+				//Log.Information(episodeFilename);
+				
 				// This is the final path of where we save it.
 				var episodePathOld = Path.Combine(podcastPath, episodeFilenameOld);
 				var episodePath = Path.Combine(podcastPath, episodeFilename);
 
-				if (File.Exists(episodePathOld) == true)
+				if (File.Exists(episodePathOld) == true && File.Exists(episodeFilename) == false)
 				{
 					Log.Information("Moving podcast from old format to new format");
 					Log.Information($"Old: {episodePathOld}");
