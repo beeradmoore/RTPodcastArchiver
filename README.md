@@ -14,31 +14,33 @@ Due to not knowing what will come over the next 60 days here is a link an archiv
 
 Please consider [donating](https://archive.org/donate?origin=iawww-TopNavDonateButton) to the Internet Archive ❤️
 
-- [30 Morbid Minutes](https://archive.org/details/rt-podcast-30-morbid-minutes)
-- [A Simple Talk](https://archive.org/details/rt-podcast-a-simple-talk)
-- [ANMA](https://archive.org/details/rt-podcast-anma)
-- [Always Open](https://archive.org/details/rt-podcast-always-open)
-- [Annual Pass](https://archive.org/details/rt-podcast-annual-pass)
-- [Beneath](https://archive.org/details/rt-podcast-beneath)
-- [Black Box Down](https://archive.org/details/rt-podcast-black-box-down)
-- [D&D, but...](https://archive.org/details/rt-podcast-dd-but)
-- [DEATH BATTLE Cast](https://archive.org/details/rt-podcast-death-battle-cast)
-- [F**kface](https://archive.org/details/rt-podcast-fkface)
-- [Face Jam](https://archive.org/details/rt-podcast-face-jam)
-- [Funhaus Podcast](https://archive.org/details/rt-podcast-funhaus-podcast)
-- [Good Morning From Hell](https://archive.org/details/rt-podcast-good-morning-from-hell)
-- [Hypothetical Nonsense](https://archive.org/details/rt-podcast-hypothetical-nonsense)
-- [Must Be Dice](https://archive.org/details/rt-podcast-must-be-dice)
-- [OT3 Podcast](https://archive.org/details/rt-podcast-ot3-podcast)
-- [Off Topic](https://archive.org/details/rt-podcast-off-topic)
-- [Red Web](https://archive.org/details/rt-podcast-red-web)
-- [Rooster Teeth Podcast](https://archive.org/details/rt-podcast-rooster-teeth-podcast)
-- [Ship Hits The Fan](https://archive.org/details/rt-podcast-ship-hits-the-fan)
-- [So... Alright](https://archive.org/details/rt-podcast-so-alright)
-- [Tales from the Stinky Dragon](https://archive.org/details/rt-podcast-tales-from-the-stinky-dragon)
-- [The Dogbark Podcast](https://archive.org/details/rt-podcast-the-dogbark-podcast)
-- [The Most](https://archive.org/details/rt-podcast-the-most)
-- [Trash for Trash](https://archive.org/details/rt-podcast-trash-for-trash)
+| Podcast | Status |
+|---------|--------|
+| [30 Morbid Minutes](https://archive.org/details/rt-podcast-30-morbid-minutes) | Uploading, Validating |
+| [A Simple Talk](https://archive.org/details/rt-podcast-a-simple-talk) | Uploading, Validating |
+| [ANMA](https://archive.org/details/rt-podcast-anma) | Uploading, Validating |
+| [Always Open](https://archive.org/details/rt-podcast-always-open) | Uploading, Validating |
+| [Annual Pass](https://archive.org/details/rt-podcast-annual-pass) | Uploading, Validating |
+| [Beneath](https://archive.org/details/rt-podcast-beneath) | Uploading, Validating |
+| [Black Box Down](https://archive.org/details/rt-podcast-black-box-down) | Uploading, Validating |
+| [D&D, but...](https://archive.org/details/rt-podcast-dd-but) | Uploading, Validating |
+| [DEATH BATTLE Cast](https://archive.org/details/rt-podcast-death-battle-cast) | Uploading, Validating |
+| [F**kface](https://archive.org/details/rt-podcast-fkface) | Uploading, Validating |
+| [Face Jam](https://archive.org/details/rt-podcast-face-jam) | Uploading, Validating |
+| [Funhaus Podcast](https://archive.org/details/rt-podcast-funhaus-podcast) | Uploading, Validating |
+| [Good Morning From Hell](https://archive.org/details/rt-podcast-good-morning-from-hell) | Uploading, Validating |
+| [Hypothetical Nonsense](https://archive.org/details/rt-podcast-hypothetical-nonsense) | Uploading, Validating |
+| [Must Be Dice](https://archive.org/details/rt-podcast-must-be-dice) | Uploading, Validating |
+| [OT3 Podcast](https://archive.org/details/rt-podcast-ot3-podcast) | Uploading, Validating |
+| [Off Topic](https://archive.org/details/rt-podcast-off-topic) | Uploading, Validating |
+| [Red Web](https://archive.org/details/rt-podcast-red-web) | Uploading, Validating |
+| [Rooster Teeth Podcast](https://archive.org/details/rt-podcast-rooster-teeth-podcast) | Uploading, Validating |
+| [Ship Hits The Fan](https://archive.org/details/rt-podcast-ship-hits-the-fan) | Uploading, Validating |
+| [So... Alright](https://archive.org/details/rt-podcast-so-alright) | Uploading, Validating |
+| [Tales from the Stinky Dragon](https://archive.org/details/rt-podcast-tales-from-the-stinky-dragon) | Uploading, Validating |
+| [The Dogbark Podcast](https://archive.org/details/rt-podcast-the-dogbark-podcast) | Uploading, Validating |
+| [The Most](https://archive.org/details/rt-podcast-the-most) | Uploading, Validating |
+| [Trash for Trash](https://archive.org/details/rt-podcast-trash-for-trash) | Uploading, Validating |
 
 # Using these archives in podcasts apps
 As each of these podcasts get updated there will also be an rss feed you can subscribed to them at. That will be in the notes section of the archives above.
