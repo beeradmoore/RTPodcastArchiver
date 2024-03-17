@@ -60,7 +60,7 @@ class Program
 
 		if (originalFilename != filename)
 		{
-			Log.Information($"\n\nXX OLD: {originalFilename}\nXX NEW: {filename}\n\n");
+			//Log.Information($"\n\nXX OLD: {originalFilename}\nXX NEW: {filename}\n\n");
 		}
 		//var cleanFileName = Regex.Replace(filename, "[^a-zA-Z0-9._\\-() ]+", String.Empty);
 		
