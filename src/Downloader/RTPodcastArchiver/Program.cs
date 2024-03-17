@@ -37,7 +37,10 @@ class Program
 	
 	static string MakeSafeFilenameNew(string filename)
 	{
-		var cleanFileName =  Regex.Replace(filename, "[^a-zA-Z0-9._\\-() ]+", String.Empty);
+		// Special cases for podcasts that "use a format // like this"
+		filename = filename.Replace("//", "-");
+		
+		var cleanFileName = Regex.Replace(filename, "[^a-zA-Z0-9._\\-() ]+", String.Empty);
 		Log.Information($"{filename} -> {cleanFileName}");
 		return cleanFileName;
 	}
