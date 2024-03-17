@@ -9,4 +9,14 @@ public class Podcast
 
 	[JsonPropertyName("url")]
 	public string Url { get; set; } = String.Empty;
+
+	public Podcast()
+	{
+		
+	}
+
+	public Podcast(string name)
+	{
+		Name = name;
+	}
 }
