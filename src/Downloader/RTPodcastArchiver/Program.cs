@@ -574,14 +574,17 @@ class Program
 
 				try
 				{
+					var fileName = Path.GetFileName(fileSummary.LocalFilename);
+					var tempFileName = Path.Combine(Path.GetTempPath(), fileName);
 					// Use this stream to download the data.
 					using (var stream = await _httpClient.GetStreamAsync(fileSummary.RemoteUrl))
 					{
-						using (var fileStream = File.Create(fileSummary.LocalFilename))
+						using (var fileStream = File.Create(tempFileName))
 						{
 							await stream.CopyToAsync(fileStream);
 							fileSummary.ActualLength = fileStream.Length;
 						}
+						File.Move(tempFileName, fileSummary.LocalFilename);
 					}
 				}
 				catch (Exception err)
