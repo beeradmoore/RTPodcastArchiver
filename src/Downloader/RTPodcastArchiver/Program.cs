@@ -94,7 +94,7 @@ class Program
 		// Setup logger
 		Log.Logger = new LoggerConfiguration()
 			.WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss}] {Message}{NewLine}{Exception}")
-			.WriteTo.File(Path.Combine(logPath, "rt_podcast_archiver_.log"))
+			.WriteTo.File(Path.Combine(logPath, "rt_podcast_archiver_.log"), rollingInterval: RollingInterval.Day)
 			.CreateLogger();
 
 		// Load the podcasts.json which contains your user specific URLs
