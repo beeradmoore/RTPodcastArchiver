@@ -1532,7 +1532,7 @@ class Program
             
 			
 			
-			/*
+			
 			// We have now looked at every episode for this podcast. Now to download them all.
 			// We use a Parallel.ForEachAsync so we can download them in parallel to speed things up.
 			var parallelOptions = new ParallelOptions()
@@ -1580,7 +1580,6 @@ class Program
 			{
 				JsonSerializer.Serialize(fileStream, fileSummaryList, new JsonSerializerOptions() { WriteIndented = true });
 			}
-			*/
 		}
 		allFileNames.Sort();
 
