@@ -1537,7 +1537,7 @@ class Program
 			// We use a Parallel.ForEachAsync so we can download them in parallel to speed things up.
 			var parallelOptions = new ParallelOptions()
 			{
-				MaxDegreeOfParallelism = 8,
+				//MaxDegreeOfParallelism = 8,
 			};
 			await Parallel.ForEachAsync(fileSummaryList, parallelOptions, async (fileSummary, token) =>
 			{
