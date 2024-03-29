@@ -1567,7 +1567,7 @@ class Program
 				}
 				catch (Exception err)
 				{
-					Log.Information(err, "Could not download podcast.");
+					Log.Information(err, $"Could not download {episodeFilename}.");
 					Debugger.Break();
 				}
 			});
