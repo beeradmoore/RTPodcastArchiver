@@ -1639,7 +1639,9 @@ class Program
 			//Debugger.Break();
 		}
 		
-		File.WriteAllText("test_files.txt", stringBuilder.ToString());
+		var allmp3sSummary = Path.Combine(archivePath, "all_mp3s.txt");
+		BackupFile(allmp3sSummary);
+		File.WriteAllText(allmp3sSummary, stringBuilder.ToString());
 		//Console.WriteLine(String.Join("\n", allFileNames));
 		return 0;
 	}
