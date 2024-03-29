@@ -1383,15 +1383,12 @@ class Program
 					}
 				}
 
+				
 				if (episodeInt == -1 && seasonInt == -1)
 				{
-
-					Console.WriteLine(title);
+					Log.Information($"No episode or season number found: {title}");
 				}
-
-
-
-
+				
 
 				// Lets get rid of episodes with the number at the end, it isn't needed at
 				// this point, because if we got here we have an E[number] to put at the start.
