@@ -212,6 +212,8 @@ class Program
 			}
 			return 0;
 		}
+
+		Log.Information("Starting sync");
 		
 		
 		using (var fileStream = File.OpenRead(podcastsJson))
