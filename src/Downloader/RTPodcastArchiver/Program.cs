@@ -85,6 +85,16 @@ class Program
 		*/
 	}
 
+	static void BackupFile(string fileName)
+	{
+		if (File.Exists(fileName) == true)
+		{
+			var newFileName = $"{Path.GetFileNameWithoutExtension(fileName)}.backup.{DateTimeOffset.Now.ToUnixTimeSeconds()}{Path.GetExtension(fileName)}";
+			var backupPath = Path.Combine(Path.GetDirectoryName(fileName), newFileName);
+			File.Move(fileName, backupPath);
+		}
+	}
+
 
 	static async Task<int> RunAsync(string outputPath)
 	{
@@ -274,11 +284,7 @@ class Program
 				try
 				{
 					// If the podcast XML file exists back it up.
-					if (File.Exists(podcastXmlPath) == true)
-					{
-						var backupPath = Path.Combine(podcastPath, $"podcast_backup_{DateTimeOffset.Now.ToUnixTimeSeconds()}.xml");
-						File.Move(podcastXmlPath, backupPath);
-					}
+					BackupFile(podcastXmlPath);
 					var podcastData = await podcastResponse.Content.ReadAsStringAsync();
 					File.WriteAllText(podcastXmlPath, podcastData);
 				}
@@ -1522,8 +1528,10 @@ class Program
 				{
 					//Log.Information($"File already exists, skipping, {episodeFilename}");
 				}
-			}
+			} // end of foreach (var item in items)
             
+			
+			
 			/*
 			// We have now looked at every episode for this podcast. Now to download them all.
 			// We use a Parallel.ForEachAsync so we can download them in parallel to speed things up.
@@ -1567,6 +1575,7 @@ class Program
 			// Now that we have downloaded (or at least attempted to download) each of the episodes we
 			// want to save a summary.json in the folder so we have a reference of what exists.
 			var summaryJson = Path.Combine(podcastPath, "summary.json");
+			BackupFile(summaryJson);
 			using (var fileStream = File.Create(summaryJson))
 			{
 				JsonSerializer.Serialize(fileStream, fileSummaryList, new JsonSerializerOptions() { WriteIndented = true });
