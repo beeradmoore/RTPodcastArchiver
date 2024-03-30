@@ -172,31 +172,31 @@ class Program
 			Log.Information("...\n");
 			Log.Information("");
 			
-			podcasts.Add(new Podcast("30 Morbid Minutes"));
-			podcasts.Add(new Podcast("A Simple Talk"));
-			podcasts.Add(new Podcast("Always Open"));
-			podcasts.Add(new Podcast("ANMA"));
-			podcasts.Add(new Podcast("Annual Pass"));
-			podcasts.Add(new Podcast("Beneath"));
-			podcasts.Add(new Podcast("Black Box Down"));
-			podcasts.Add(new Podcast("D&D, but..."));
-			podcasts.Add(new Podcast("DEATH BATTLE Cast"));
-			podcasts.Add(new Podcast("F**kface"));
-			podcasts.Add(new Podcast("Face Jam"));
-			podcasts.Add(new Podcast("Funhaus Podcast"));
-			podcasts.Add(new Podcast("Good Morning From Hell"));
-			podcasts.Add(new Podcast("Hypothetical Nonsense"));
-			podcasts.Add(new Podcast("Must Be Dice"));
-			podcasts.Add(new Podcast("Off Topic"));
-			podcasts.Add(new Podcast("OT3 Podcast"));
-			podcasts.Add(new Podcast("Red Web"));
-			podcasts.Add(new Podcast("Rooster Teeth Podcast"));
-			podcasts.Add(new Podcast("Ship Hits The Fan"));
-			podcasts.Add(new Podcast("So... Alright"));
-			podcasts.Add(new Podcast("Tales from the Stinky Dragon"));
-			podcasts.Add(new Podcast("The Dogbark Podcast"));
-			podcasts.Add(new Podcast("The Most"));
-			podcasts.Add(new Podcast("Trash for Trash"));
+			podcasts.Add(new Podcast("30 Morbid Minutes (FIRST Member Ad-Free)"));
+			podcasts.Add(new Podcast("A Simple Talk (FIRST Member Ad-Free)"));
+			podcasts.Add(new Podcast("Always Open (FIRST Member Ad-Free)"));
+			podcasts.Add(new Podcast("ANMA (FIRST Member Ad-Free)"));
+			podcasts.Add(new Podcast("Annual Pass (FIRST Member Ad-Free)"));
+			podcasts.Add(new Podcast("Beneath (FIRST Member Ad-Free)"));
+			podcasts.Add(new Podcast("Black Box Down (FIRST Member Ad-Free)"));
+			podcasts.Add(new Podcast("D&D, but... (FIRST Member Ad-Free)"));
+			podcasts.Add(new Podcast("DEATH BATTLE Cast (FIRST Member Ad-Free)"));
+			podcasts.Add(new Podcast("F**kface (FIRST Member Ad-Free)"));
+			podcasts.Add(new Podcast("Face Jam (FIRST Member Ad-Free)"));
+			podcasts.Add(new Podcast("Funhaus Podcast (FIRST Member Ad-Free)"));
+			podcasts.Add(new Podcast("Good Morning From Hell (FIRST Member Ad-Free)"));
+			podcasts.Add(new Podcast("Hypothetical Nonsense (FIRST Member Ad-Free)"));
+			podcasts.Add(new Podcast("Must Be Dice (FIRST Member Ad-Free)"));
+			podcasts.Add(new Podcast("Off Topic (FIRST Member Ad-Free)"));
+			podcasts.Add(new Podcast("OT3 Podcast (FIRST Member Ad-Free)"));
+			podcasts.Add(new Podcast("Red Web (FIRST Member Ad-Free)"));
+			podcasts.Add(new Podcast("Rooster Teeth Podcast (FIRST Member Ad-Free)"));
+			podcasts.Add(new Podcast("Ship Hits The Fan (FIRST Member Ad-Free)"));
+			podcasts.Add(new Podcast("So... Alright (FIRST Member Ad-Free)"));
+			podcasts.Add(new Podcast("Tales from the Stinky Dragon (FIRST Member Ad-Free)"));
+			podcasts.Add(new Podcast("The Dogbark Podcast (FIRST Member Ad-Free)"));
+			podcasts.Add(new Podcast("The Most (FIRST Member Ad-Free)"));
+			podcasts.Add(new Podcast("Trash for Trash (FIRST Member Ad-Free)"));
 			
 			try
 			{
@@ -374,6 +374,10 @@ class Program
 				}
 			}
 
+			#if DEBUG
+			items = items.Take(10).ToList();
+			#endif
+			
 			// This fileSummaryList will contain lookup data for the other tool used to upload the podcasts to Internet Archive.
 			var fileSummaryList = new List<FileSummary>();
 			foreach (var item in items)
@@ -464,7 +468,7 @@ class Program
 
 				#region Manual episode fixes
 
-				if (podcast.Name == "30 Morbid Minutes")
+				if (podcast.Name == "30 Morbid Minutes (FIRST Member Ad-Free)")
 				{
 					if (guid == "49392c9a-e5ff-11ed-9fdc-13177201a8ae")
 					{
@@ -477,7 +481,7 @@ class Program
 						seasonInt = 8;
 					}
 				}
-				else if (podcast.Name == "A Simple Talk")
+				else if (podcast.Name == "A Simple Talk (FIRST Member Ad-Free)")
 				{
 					if (guid == "f998b656-58ae-11ee-86ef-cf937693f33c")
 					{
@@ -510,7 +514,7 @@ class Program
 						episodeInt = 8;
 					}
 				}
-				else if (podcast.Name == "Always Open")
+				else if (podcast.Name == "Always Open (FIRST Member Ad-Free)")
 				{
 					if (guid == "b9903262-16de-11ee-9d10-23c3320b495e")
 					{
@@ -519,7 +523,7 @@ class Program
 						episodeInt = 159;
 					}
 				}
-				else if (podcast.Name == "ANMA")
+				else if (podcast.Name == "ANMA (FIRST Member Ad-Free)")
 				{
 					// Unsure what should be done to these episodes, so they are left as is.
 					// 2022-06-19 0700 - E7 - The Beginning of Our Internet Journey (7346c710-ee64-11ec-b323-7b2bc1fab113).mp3
@@ -571,15 +575,15 @@ class Program
 						episodeInt = -1;
 					}
 				}
-				else if (podcast.Name == "Annual Pass")
+				else if (podcast.Name == "Annual Pass (FIRST Member Ad-Free)")
 				{
 					// Perfect, no notes.
 				}
-				else if (podcast.Name == "Beneath")
+				else if (podcast.Name == "Beneath (FIRST Member Ad-Free)")
 				{
 					// Perfect, no notes.
 				}
-				else if (podcast.Name == "Black Box Down")
+				else if (podcast.Name == "Black Box Down (FIRST Member Ad-Free)")
 				{
 					// Unsure what is going on here
 					// 2022-05-18 0700 - S08 E81 - All About Airspaces, The Places You Can't Fly In (62c3adc6-d55b-11ec-a86b-9777fb213db6).mp3
@@ -607,11 +611,11 @@ class Program
 						seasonInt = 2;
 					}	
 				}
-				else if (podcast.Name == "D&D, but...")
+				else if (podcast.Name == "D&D, but... (FIRST Member Ad-Free)")
 				{
 					// Perfect, no notes.
 				}
-				else if (podcast.Name == "DEATH BATTLE Cast")
+				else if (podcast.Name == "DEATH BATTLE Cast (FIRST Member Ad-Free)")
 				{
 					// Looking at title for episode number, this says #80, but its the 60th in the list
 					// 2018-06-09 1900 - Strange vs Fate Sneak Peak - #80 (00000000-0000-0000-0000-000050000000).mp3
@@ -644,7 +648,7 @@ class Program
 						seasonInt = 8;
 					}
 				}
-				else if (podcast.Name == "F**kface")
+				else if (podcast.Name == "F**kface (FIRST Member Ad-Free)")
 				{
 					if (guid == "5a763164-9088-11ed-a11b-9372f9497016")
 					{
@@ -746,7 +750,7 @@ class Program
 						seasonInt = 6;
 					}
 				}
-				else if (podcast.Name == "Face Jam")
+				else if (podcast.Name == "Face Jam (FIRST Member Ad-Free)")
 				{
 					// First numbered episode, is actually 38th episide
 					// 2020-12-22 0800 - E30 - Taco Cabana Chicken Tinga & Cheese Poblano Torpedos (a751d6c0-4169-11eb-a11b-3f8929b86a68).mp3
@@ -807,7 +811,7 @@ class Program
 					}
 
 				}
-				else if (podcast.Name == "Funhaus Podcast")
+				else if (podcast.Name == "Funhaus Podcast (FIRST Member Ad-Free)")
 				{
 					// No episode 23
 					// 2015-07-01 1443 - Are We GAMES JOURNALISTS  - #22 (00000000-0000-0000-0000-000016000000).mp3
@@ -852,7 +856,7 @@ class Program
 					// 2022-12-14 1400 - S08 E408 - All We Want for Christmas is Death Stranding 2 - Funhaus Podcast (993a5764-7b7e-11ed-ae45-3fcfb184407a).mp3
 					
 				}
-				else if (podcast.Name == "Good Morning From Hell")
+				else if (podcast.Name == "Good Morning From Hell (FIRST Member Ad-Free)")
 				{
 					if (guid == "5321d644-6807-11eb-8f50-7798a363789e")
 					{
@@ -865,7 +869,7 @@ class Program
 						episodeInt = -1;
 					}
 				}
-				else if (podcast.Name == "Hypothetical Nonsense")
+				else if (podcast.Name == "Hypothetical Nonsense (FIRST Member Ad-Free)")
 				{
 					if (guid == "602f6064-597b-11ee-b43d-c75f60d46582")
 					{
@@ -883,7 +887,7 @@ class Program
 						episodeInt = 13;
 					}
 				}
-				else if (podcast.Name == "Must Be Dice")
+				else if (podcast.Name == "Must Be Dice (FIRST Member Ad-Free)")
 				{
 					if (guid == "855db4d4-c2bf-11ec-a890-778d01c8fd9d")
 					{
@@ -956,7 +960,7 @@ class Program
 						episodeInt = 18;
 					}
 				}
-				else if (podcast.Name == "Off Topic")
+				else if (podcast.Name == "Off Topic (FIRST Member Ad-Free)")
 				{
 					if (guid == "00000000-0000-0000-0000-00009b000000")
 					{
@@ -1017,7 +1021,7 @@ class Program
 					}
 					
 				}
-				else if (podcast.Name == "OT3 Podcast")
+				else if (podcast.Name == "OT3 Podcast (FIRST Member Ad-Free)")
 				{
 					if (guid == "2e6ae14c-0c35-11ec-87f2-bf6f978fb24d")
 					{
@@ -1038,7 +1042,7 @@ class Program
 						seasonInt = 2;
 					}
 				}
-				else if (podcast.Name == "Red Web")
+				else if (podcast.Name == "Red Web (FIRST Member Ad-Free)")
 				{
 					if (guid == "d96d1270-a472-11eb-ab80-9b12c8658daf")
 					{
@@ -1082,7 +1086,7 @@ class Program
 						episodeInt = -1;
 					}
 				}
-				else if (podcast.Name == "Rooster Teeth Podcast")
+				else if (podcast.Name == "Rooster Teeth Podcast (FIRST Member Ad-Free)")
 				{
 					var rtpEpisodeRegex = new Regex(@"#(?<episodeNumber>\d+)([ ]*)$");
 					var match = rtpEpisodeRegex.Match(title);
@@ -1111,7 +1115,7 @@ class Program
 						episodeInt = 794;
 					}
 				}
-				else if (podcast.Name == "Ship Hits The Fan")
+				else if (podcast.Name == "Ship Hits The Fan (FIRST Member Ad-Free)")
 				{
 					// 2022-04-12 070000 - S01 E7 - Shifting Into Reverse Sinks the SS Norge - Ship Hits the Fan Podcast (722fd31e-ba14-11ec-a08f-77b2572bc51e).mp3
 					// 2022-04-19 070000 - S01 E8 - A Shipwreck Graveyard Claims the Edmund Fitzgerald - Ship Hits the Fan Podcast (3ab8122c-bfa3-11ec-bc39-1beb97a70bf8).mp3
@@ -1142,7 +1146,7 @@ class Program
 					// 2023-04-04 070000 - S04 - What Sunk the Floating Crypto Bro Utopia - Ship Hits the Fan Podcast (b9d48e10-d270-11ed-bdca-73130a32b010).mp3
 					// 2023-04-18 070000 - S05 E45 - Germany Sinks the RMS Lusitania - Ship Hits the Fan Podcast (d540b4d0-dd56-11ed-a1bb-53328680e463).mp3
 				}
-				else if (podcast.Name == "So... Alright")
+				else if (podcast.Name == "So... Alright (FIRST Member Ad-Free)")
 				{
 					if (guid == "7316ad24-4e75-11ee-9051-bb3bc7db730a")
 					{
@@ -1167,7 +1171,7 @@ class Program
 						seasonInt = 2;
 					}
 				}
-				else if (podcast.Name == "Tales from the Stinky Dragon")
+				else if (podcast.Name == "Tales from the Stinky Dragon (FIRST Member Ad-Free)")
 				{
 					if (guid == "4914cf7a-e5de-11ec-a073-8f6acd7e4a1c")
 					{
@@ -1310,7 +1314,7 @@ class Program
 					}
 					
 				}
-				else if (podcast.Name == "The Dogbark Podcast")
+				else if (podcast.Name == "The Dogbark Podcast (FIRST Member Ad-Free)")
 				{
 					if (guid == "9dfb77c2-6243-11ee-83bc-7b115221cf49")
 					{
@@ -1331,7 +1335,7 @@ class Program
 						title = match.Groups["title"].Value;
 					}
 				}
-				else if (podcast.Name == "The Most")
+				else if (podcast.Name == "The Most (FIRST Member Ad-Free)")
 				{
 					// two episode 49s, is one a sup?
 					// 2022-01-30 080000 - S02 E48 - Fabulous Abacus (36606c00-8070-11ec-897a-dfa38e54a802).mp3
@@ -1339,7 +1343,7 @@ class Program
 					// 2022-02-13 080000 - S02 E49 - We Like The Slop (19f10ce6-8b92-11ec-bee3-bfa285442452).mp3
 					// 2022-02-20 080000 - S02 E50 - Now That's What I Call Monsters (5eed4a04-90ff-11ec-9611-f31056cb5949).mp3
 				}
-				else if (podcast.Name == "Trash for Trash")
+				else if (podcast.Name == "Trash for Trash (FIRST Member Ad-Free)")
 				{
 					// Perfect, no notes.
 				}
@@ -1510,7 +1514,7 @@ class Program
 					{
 						// For some reason Black Box Down file size does not match actual file size.
 						// So instead we just have to assume we did get all files downloaded correctly.
-						if (podcast.Name == "Black Box Down")
+						if (podcast.Name == "Black Box Down (FIRST Member Ad-Free)")
 						{
 							shouldDownload = false;
 						}
@@ -1570,7 +1574,7 @@ class Program
 				catch (Exception err)
 				{
 					Log.Error(err, $"Could not download {episodeFilename}.");
-					Debugger.Break();
+					//Debugger.Break();
 				}
 			});
 
@@ -1591,31 +1595,31 @@ class Program
 		var completedPodcasts = new List<string>()
 		{
 			/*
-			"30 Morbid Minutes",
-			"A Simple Talk",
-			"Always Open",
-			"ANMA",
-			"Annual Pass",
-			"Beneath",
-			"Black Box Down",
-			"D&D, but...",
-			"DEATH BATTLE Cast",
-			"F**kface",
-			"Face Jam",
-			"Funhaus Podcast",
-			"Good Morning From Hell",
-			"Hypothetical Nonsense",
-			"Must Be Dice",	
-			"Off Topic",
-			"OT3 Podcast",
-			"Red Web",
-			"Rooster Teeth Podcast",
-			"Ship Hits The Fan",
-			"So... Alright",
-			"Tales from the Stinky Dragon",
-			"The Dogbark Podcast",
-			"The Most",
-			"Trash for Trash",
+			"30 Morbid Minutes (FIRST Member Ad-Free)",
+			"A Simple Talk (FIRST Member Ad-Free)",
+			"Always Open (FIRST Member Ad-Free)",
+			"ANMA (FIRST Member Ad-Free)",
+			"Annual Pass (FIRST Member Ad-Free)",
+			"Beneath (FIRST Member Ad-Free)",
+			"Black Box Down (FIRST Member Ad-Free)",
+			"D&D, but... (FIRST Member Ad-Free)",
+			"DEATH BATTLE Cast (FIRST Member Ad-Free)",
+			"F**kface (FIRST Member Ad-Free)",
+			"Face Jam (FIRST Member Ad-Free)",
+			"Funhaus Podcast (FIRST Member Ad-Free)",
+			"Good Morning From Hell (FIRST Member Ad-Free)",
+			"Hypothetical Nonsense (FIRST Member Ad-Free)",
+			"Must Be Dice (FIRST Member Ad-Free)",	
+			"Off Topic (FIRST Member Ad-Free)",
+			"OT3 Podcast (FIRST Member Ad-Free)",
+			"Red Web (FIRST Member Ad-Free)",
+			"Rooster Teeth Podcast (FIRST Member Ad-Free)",
+			"Ship Hits The Fan (FIRST Member Ad-Free)",
+			"So... Alright (FIRST Member Ad-Free)",
+			"Tales from the Stinky Dragon (FIRST Member Ad-Free)",
+			"The Dogbark Podcast (FIRST Member Ad-Free)",
+			"The Most (FIRST Member Ad-Free)",
+			"Trash for Trash  (FIRST Member Ad-Free)",
 			*/
 		};
 		
