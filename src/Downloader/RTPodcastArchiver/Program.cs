@@ -271,11 +271,12 @@ class Program
 			
 			if (loadPodcastsFromCache == true && File.Exists(podcastXmlPath))
 			{
-				
+				Log.Information($"Using cache. Not loading fresh fresh rss stream ({podcast.Url})");
 			}
 			else
 			{
 				// Download podcast manifest.
+				Log.Information($"Downloading fresh rss stream - {podcast.Url}");
 				var podcastResponse = await _httpClient.GetAsync(podcast.Url);
 				if (podcastResponse.StatusCode != HttpStatusCode.OK)
 				{
@@ -1536,7 +1537,9 @@ class Program
 			// We use a Parallel.ForEachAsync so we can download them in parallel to speed things up.
 			var parallelOptions = new ParallelOptions()
 			{
-				//MaxDegreeOfParallelism = 8,
+				#if DEBUG
+				MaxDegreeOfParallelism = 1,
+				#endif
 			};
 			await Parallel.ForEachAsync(fileSummaryList, parallelOptions, async (fileSummary, token) =>
 			{
