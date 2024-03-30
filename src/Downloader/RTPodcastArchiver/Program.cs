@@ -468,14 +468,16 @@ class Program
 
 				#region Manual episode fixes
 
-				if (podcast.Name == "30 Morbid Minutes (FIRST Member Ad-Free)")
+				if (podcast.Name == "30 Morbid Minutes (FIRST Member Ad-Free)" || podcast.Name == "30 Morbid Minutes")
 				{
-					if (guid == "49392c9a-e5ff-11ed-9fdc-13177201a8ae")
+					if (guid == "49392c9a-e5ff-11ed-9fdc-13177201a8ae" ||
+					    guid == "36670d4e-e5ff-11ed-92d6-373dc3311900")
 					{
 						// 2023-05-01 0700 - S05 E142 - The Screaming Mummy (49392c9a-e5ff-11ed-9fdc-13177201a8ae).mp3
 						episodeInt = 42;
 					}
-					else if (guid == "68d2f436-a5ae-11ee-ba8e-0bea39a3a468")
+					else if (guid == "68d2f436-a5ae-11ee-ba8e-0bea39a3a468" ||
+					         guid == "8828dc38-a5ae-11ee-a1d2-5fbde4d96254")
 					{
 						// 2024-01-02 0800 - E69 - Inside Body Farms with a Future Resident (68d2f436-a5ae-11ee-ba8e-0bea39a3a468).mp3
 						seasonInt = 8;
@@ -514,6 +516,27 @@ class Program
 						episodeInt = 8;
 					}
 				}
+				else if (podcast.Name == "Always Open")
+				{
+					if (guid == "a6b38f04-16de-11ee-9c3f-8fc0dfba7d08")
+					{
+						// 2023-07-11 130000 - E19 - Does Exercise ACTUALLY help your Brain (a6b38f04-16de-11ee-9c3f-8fc0dfba7d08).mp3
+						seasonInt = 7;
+						episodeInt = 159;
+					}
+
+					var alwaysOpenRegex = new Regex(@"^(.*)-(\s*)#(?<episodeNumber>\d+)$");
+					var match = alwaysOpenRegex.Match(title);
+					if (match.Success)
+					{
+						if (int.TryParse(match.Groups["episodeNumber"].ValueSpan, out int tempEpisodeInt) == true)
+						{
+							episodeInt = tempEpisodeInt;
+						}
+					}
+					
+					//Debugger.Break();
+				}
 				else if (podcast.Name == "Always Open (FIRST Member Ad-Free)")
 				{
 					if (guid == "b9903262-16de-11ee-9d10-23c3320b495e")
@@ -523,7 +546,7 @@ class Program
 						episodeInt = 159;
 					}
 				}
-				else if (podcast.Name == "ANMA (FIRST Member Ad-Free)")
+				else if (podcast.Name == "ANMA (FIRST Member Ad-Free)" || podcast.Name == "ANMA")
 				{
 					// Unsure what should be done to these episodes, so they are left as is.
 					// 2022-06-19 0700 - E7 - The Beginning of Our Internet Journey (7346c710-ee64-11ec-b323-7b2bc1fab113).mp3
@@ -531,7 +554,8 @@ class Program
 					// 2022-07-03 0700 - E1 - Geoff & Eric at Vidcon (b28ff310-f891-11ec-bea6-537e621e57de).mp3
 					// 2022-07-10 0700 - E2 - LEAKED ANMA RTX Panel Live (11be2d24-ff0a-11ec-b67d-bb90bacbeb66).mp3
 					// 2022-07-17 0700 - E9 - Gus Gets Puked On (0d0b9b12-0532-11ed-98d9-abd4c691f5bb).mp3
-					if (guid == "32899d96-c1fe-11ee-b94e-cf2d0af2da17")
+					if (guid == "32899d96-c1fe-11ee-b94e-cf2d0af2da17" ||
+					    guid == "37b9d650-c1fe-11ee-b4d5-4b8016f6d4f7")
 					{
 						// This is actually a supplemental episode
 						// 2024-02-05 0800 - E74 - Geoff & Eric Talk (More) Music (32899d96-c1fe-11ee-b94e-cf2d0af2da17).mp3
@@ -544,17 +568,20 @@ class Program
 					// 2024-03-04 0800 - E76 - Paradise for Gentlemen (7eebe7d6-d813-11ee-b864-938054e0095f).mp3
 					// 2024-03-11 0700 - S03 E77 - It's a Mayonnaise Commercial (ce2cb668-dd77-11ee-987d-c7d840b52aa7).mp3
 					// 2024-03-18 0700 - E78 - The Future of ANMA (6465f68c-e302-11ee-a065-874f56b5dc97).mp3
-					if (guid == "94f93eba-d288-11ee-941f-dfda8057d242")
+					if (guid == "94f93eba-d288-11ee-941f-dfda8057d242" || 
+					    guid == "9abff58c-d288-11ee-b417-e70160b0e254")
 					{
 						// 2024-02-26 0800 - S03 E75 - Third Wave Coffee (94f93eba-d288-11ee-941f-dfda8057d242).mp3
 						seasonInt = -1;
 					}
-					else if (guid == "ce2cb668-dd77-11ee-987d-c7d840b52aa7")
+					else if (guid == "ce2cb668-dd77-11ee-987d-c7d840b52aa7" ||
+					         guid == "d84a009c-dd77-11ee-8a65-bb990b0d3a3a")
 					{
 						// 2024-03-11 0700 - S03 E77 - It's a Mayonnaise Commercial (ce2cb668-dd77-11ee-987d-c7d840b52aa7).mp3
 						seasonInt = -1;
 					}
-					else if (guid == "61fb6918-e87a-11ee-b4cb-a769e3c22fab")
+					else if (guid == "61fb6918-e87a-11ee-b4cb-a769e3c22fab" || 
+					         guid == "647837a2-e87a-11ee-ba95-23b76ad25d35")
 					{
 						// 2024-03-25 070000 - S03 E79 - In the Carcass of Our Memories (61fb6918-e87a-11ee-b4cb-a769e3c22fab).mp3
 						seasonInt = -1;
@@ -575,31 +602,25 @@ class Program
 						episodeInt = -1;
 					}
 				}
-				else if (podcast.Name == "Annual Pass (FIRST Member Ad-Free)")
+				else if (podcast.Name == "Annual Pass (FIRST Member Ad-Free)" || podcast.Name == "Annual Pass")
 				{
 					// Perfect, no notes.
 				}
-				else if (podcast.Name == "Beneath (FIRST Member Ad-Free)")
+				else if (podcast.Name == "Annual Pass")
+				{
+					if (guid == "28c2777a-d09b-11ec-aa9c-936ef46a490a")
+					{
+						// 2022-05-12 070000 - An Interview with Carme - Disney Fireworks Specialist (28c2777a-d09b-11ec-aa9c-936ef46a490a).mp3
+						episodeInt = 56;
+					}
+				}
+				else if (podcast.Name == "Beneath (FIRST Member Ad-Free)" || podcast.Name == "Beneath")
 				{
 					// Perfect, no notes.
 				}
 				else if (podcast.Name == "Black Box Down (FIRST Member Ad-Free)")
 				{
-					// Unsure what is going on here
-					// 2022-05-18 0700 - S08 E81 - All About Airspaces, The Places You Can't Fly In (62c3adc6-d55b-11ec-a86b-9777fb213db6).mp3
-					// 2022-06-01 0700 - S08 E82 - Leaving Luggage in an Airport feat. Geoff Ramsey, Chris Left His Pants on a Plane (08c2be3c-e124-11ec-a968-4f01a79d1415).mp3
-					// 2022-06-08 0700 - S09 E83 - Was This Crash an Assassination, Polish Air Force Flight 101 Crashes with President on Board (0ef203be-e67c-11ec-8aef-b77fc2d6046c).mp3
-					// 2022-06-15 0700 - S09 E82 - Pilots Struggle as Airplane Nosedives, Alaska Airlines Flight 261 Crashes off California Coast (4f804628-ec23-11ec-8be6-3381e2e6d57d).mp3
-					// 2022-06-22 0700 - S09 E83 - Pilots Accidently Cause a Go Around, China Airlines Flight 140 Crashes At Airport (38443122-f1b9-11ec-b72e-5f43ca3dec9c).mp3
-					// 2022-06-29 0700 - S09 E84 - Airplane Does a Barrel Roll with Passengers on Board, American Eagle Flight 4184 Loses Control (3b72abd8-f724-11ec-a0f0-e3999ce6abe8).mp3
-					// 2022-07-06 0700 - S09 E85 - Did The Pilot Crash This Plane on Purpose, EgyptAir Flight 990 Ends In Controversy (772183da-fcc3-11ec-8e0a-7f50c8d3e3a5).mp3
-
-					// Our Scariest Airplane Moments! might be supplemental?
-					// 2022-07-20 070000 - S09 E87 - Airplane Crashes In A Mall Parking Lot, Fine Air Flight 101 Crashes in a Mall Parking Lot (7b370f18-077b-11ed-b86a-77c1fb57d26e).mp3
-					// 2022-07-27 070000 - S09 E88 - A Reset Circuit Breaker Causes Crash, Indonesia AirAisia Flight 8501 Falls to the Sea (07635c50-0cfc-11ed-9eb0-9bbf717650e1).mp3
-					// 2022-08-03 070000 - S09 E88 - Our Scariest Airplane Moments!, First Class (7d2f82e0-12ad-11ed-b5d8-cb167f08ab4c).mp3
-					// 2022-08-03 070000 - S09 E89 - A Failure the Pilots Were Never Trained For, TAM Flight 402 Crashes into São Paulo (b8974458-12c6-11ed-8ca5-2f8aabcba2ed).mp3
-
+					// 
 					if (guid == "4877385c-33cf-11ed-9131-6f189628cf2b")
 					{
 						// 2022-09-14 0700 - E91 - Seaplane Tragedy in Miami, Chalk's Ocean Airways Flight 101 (4877385c-33cf-11ed-9131-6f189628cf2b).mp3
@@ -609,128 +630,207 @@ class Program
 					{
 						// 2022-09-23 1623 - E92 - Air Moorea 1121, A Seven Minute Flight Ends in Tragedy (c25420a4-3960-11ed-9939-975426a161ed).mp3
 						seasonInt = 2;
-					}	
+					}
+					else if (guid == "7d2f82e0-12ad-11ed-b5d8-cb167f08ab4c")
+					{
+						// 2022-08-03 070000 - S09 E88 - Our Scariest Airplane Moments!, First Class (7d2f82e0-12ad-11ed-b5d8-cb167f08ab4c).mp3
+						episodeInt = -1;
+					}
+					else if (guid == "8c14eedc-c2aa-11ed-a563-bf9f1c1c047a")
+					{
+						// 2023-03-15 070000 - Near Misses and Aviation Headline Updates, First Class (8c14eedc-c2aa-11ed-a563-bf9f1c1c047a).mp3
+						seasonInt = 11;
+					}
+					else if (guid == "9a3605dc-c831-11ed-a120-a7b91c2c14d0")
+					{
+						// 2023-03-22 070000 - Picking Apart Planes in Movies with Blaine from 'Tales from the Stinky Dragon' (9a3605dc-c831-11ed-a120-a7b91c2c14d0).mp3
+						seasonInt = 11;
+					}
+					else if (guid == "ae0b85d4-7587-11ed-b5d8-e39f9d4ebe50")
+					{
+						// 2022-12-07 080000 - A Plane Gets Stuck in an Electrical Tower & Other Current Events, First Class (ae0b85d4-7587-11ed-b5d8-e39f9d4ebe50).mp3
+						seasonInt = 10;
+					}
+					else if (guid == "62c3adc6-d55b-11ec-a86b-9777fb213db6")
+					{
+						// 2022-05-18 070000 - S08 E81 - All About Airspaces, The Places You Can't Fly In (62c3adc6-d55b-11ec-a86b-9777fb213db6).mp3
+						episodeInt = -1;
+						
+						// The following few are to fix this
+
+
+						// 2022-05-18 0700 - S08 E81 - All About Airspaces, The Places You Can't Fly In (62c3adc6-d55b-11ec-a86b-9777fb213db6).mp3
+						// 2022-06-01 0700 - S08 E82 - Leaving Luggage in an Airport feat. Geoff Ramsey, Chris Left His Pants on a Plane (08c2be3c-e124-11ec-a968-4f01a79d1415).mp3
+						// 2022-06-08 0700 - S09 E83 - Was This Crash an Assassination, Polish Air Force Flight 101 Crashes with President on Board (0ef203be-e67c-11ec-8aef-b77fc2d6046c).mp3
+						// 2022-06-15 0700 - S09 E82 - Pilots Struggle as Airplane Nosedives, Alaska Airlines Flight 261 Crashes off California Coast (4f804628-ec23-11ec-8be6-3381e2e6d57d).mp3
+						// 2022-06-22 0700 - S09 E83 - Pilots Accidently Cause a Go Around, China Airlines Flight 140 Crashes At Airport (38443122-f1b9-11ec-b72e-5f43ca3dec9c).mp3
+						// 2022-06-29 0700 - S09 E84 - Airplane Does a Barrel Roll with Passengers on Board, American Eagle Flight 4184 Loses Control (3b72abd8-f724-11ec-a0f0-e3999ce6abe8).mp3
+						// 2022-07-06 0700 - S09 E85 - Did The Pilot Crash This Plane on Purpose, EgyptAir Flight 990 Ends In Controversy (772183da-fcc3-11ec-8e0a-7f50c8d3e3a5).mp3
+					}
+					else if (guid == "0ef203be-e67c-11ec-8aef-b77fc2d6046c")
+					{
+						// 2022-06-08 070000 - S09 E83 - Was This Crash an Assassination, Polish Air Force Flight 101 Crashes with President on Board (0ef203be-e67c-11ec-8aef-b77fc2d6046c).mp3
+						episodeInt = 81;
+					}
+					else if (guid == "08c2be3c-e124-11ec-a968-4f01a79d1415")
+					{
+						// 2022-06-01 070000 - S08 E82 - Leaving Luggage in an Airport feat. Geoff Ramsey, Chris Left His Pants on a Plane (08c2be3c-e124-11ec-a968-4f01a79d1415).mp3
+						episodeInt = -1;
+					}
 				}
-				else if (podcast.Name == "D&D, but... (FIRST Member Ad-Free)")
+				else if (podcast.Name == "D&D, but... (FIRST Member Ad-Free)" || podcast.Name == "D&D, but...")
 				{
 					// Perfect, no notes.
 				}
-				else if (podcast.Name == "DEATH BATTLE Cast (FIRST Member Ad-Free)")
+				else if (podcast.Name == "DEATH BATTLE Cast (FIRST Member Ad-Free)" || podcast.Name == "DEATH BATTLE Cast")
 				{
 					// Looking at title for episode number, this says #80, but its the 60th in the list
 					// 2018-06-09 1900 - Strange vs Fate Sneak Peak - #80 (00000000-0000-0000-0000-000050000000).mp3
 
-					// Missing episode 243
+					// Missing episode 243, 
+					// Turns out this exists in the non-first podcast streams.
 					// 2021-08-20 1700 - E241 - Gru VS Megamind (31ecfa82-012a-11ec-85da-3b7ac45d7395).mp3
 					// 2021-08-27 1700 - E242 - Osmosis Jones VS White Blood Cell U-1146 (cd59d882-068e-11ec-baf6-6fe9a1d72f4b).mp3
 					// 2021-09-16 1700 - E245 - Emperor Joker VS God Kefka (4364efde-16f8-11ec-a28e-d33484d4949e).mp3
 					// 2021-09-23 1700 - E246 - Wario VS Knuckles (eadaf0d2-1c2b-11ec-a94c-b745395eff61).mp3
 
 					// We started getting S08
-					if (guid == "0b5dd28c-bddb-11ed-86b3-8ba8aa384f5c")
+					if (guid == "0b5dd28c-bddb-11ed-86b3-8ba8aa384f5c" || 
+					    guid == "0cc477de-bddb-11ed-ae20-af205251417d")
 					{
 						// 2023-03-09 1800 - E321 - Tier Ranking ULTIMATE Female Villains (0b5dd28c-bddb-11ed-86b3-8ba8aa384f5c).mp3
 						seasonInt = 8;
 					}
-					else if (guid == "9ab71e6c-c35c-11ed-b8ad-b7e86d44988a")
+					else if (guid == "9ab71e6c-c35c-11ed-b8ad-b7e86d44988a" ||
+					         guid == "9b6505ae-c35c-11ed-bf8f-b3fa6e2df4c4")
 					{
 						// 2023-03-16 1700 - E322 - Deku VS Gon (9ab71e6c-c35c-11ed-b8ad-b7e86d44988a).mp3
 						seasonInt = 8;
 					}
-					else if (guid == "129062f8-c8f9-11ed-962a-8f5b56686fc8")
+					else if (guid == "129062f8-c8f9-11ed-962a-8f5b56686fc8" ||
+					         guid == "1352b6fa-c8f9-11ed-bc0b-576e5564f6bf")
 					{
 						// 2023-03-23 1700 - E323 - Nemesis VS Pyramid Head (129062f8-c8f9-11ed-962a-8f5b56686fc8).mp3
 						seasonInt = 8;
 					}
-					else if (guid == "ac1a70be-1b8b-11ee-88ef-d7d5640237f0")
+					else if (guid == "ac1a70be-1b8b-11ee-88ef-d7d5640237f0" ||
+					         guid == "b371fbfc-1b8b-11ee-8a27-2b684d6a2469")
 					{
 						// 2023-07-06 1700 - E338 - Captain Britain (Marvel) vs Uncle Sam (DC) (ac1a70be-1b8b-11ee-88ef-d7d5640237f0).mp3
 						seasonInt = 8;
 					}
 				}
-				else if (podcast.Name == "F**kface (FIRST Member Ad-Free)")
+				else if (podcast.Name == "F**kface (FIRST Member Ad-Free)" || podcast.Name == "F**kface")
 				{
-					if (guid == "5a763164-9088-11ed-a11b-9372f9497016")
+					if (guid == "5a763164-9088-11ed-a11b-9372f9497016" ||
+					    guid == "5b6f5dac-9088-11ed-926f-5731c0652918")
 					{
 						// 2023-01-10 0800 - E136 - Andrew is On Your Side - Geoff's year old Cosmic Crisp (5a763164-9088-11ed-a11b-9372f9497016).mp3
 						seasonInt = 5;
 					}
-					else if (guid == "a07ecb2e-572c-11ee-81a6-b765bc79ff5f")
+					else if (guid == "a07ecb2e-572c-11ee-81a6-b765bc79ff5f" || 
+					         guid == "e0f373f8-572c-11ee-af08-27e4b6f9c325")
 					{
 						// 2023-09-20 0700 - E172 - Cock Money - Punchlines (a07ecb2e-572c-11ee-81a6-b765bc79ff5f).mp3
 						seasonInt = 6;
 					}
-					else if (guid == "e6b5be60-5c93-11ee-b21e-c77334f025aa")
+					else if (guid == "e6b5be60-5c93-11ee-b21e-c77334f025aa" ||
+					         guid == "e910a8d2-5c93-11ee-bfe4-977b96e6151e")
 					{
 						// 2023-09-27 0700 - E173 - Andrews Ankles - Regulation Flavors (e6b5be60-5c93-11ee-b21e-c77334f025aa).mp3
 						seasonInt = 6;
 					}
-					else if (guid == "670e1858-620e-11ee-b5c5-a3ef96ca8d9d")
+					else if (guid == "670e1858-620e-11ee-b5c5-a3ef96ca8d9d" ||
+					         guid == "68679300-620e-11ee-a48f-bf28619703d4")
 					{
 						// 2023-10-04 0700 - E174 - Caviar Phones - Internal Monologues (670e1858-620e-11ee-b5c5-a3ef96ca8d9d).mp3
 						seasonInt = 6;
 					}
-					else if (guid == "03d6e61c-679e-11ee-a7ba-0fbfecebf62d")
+					else if (guid == "03d6e61c-679e-11ee-a7ba-0fbfecebf62d" ||
+					         guid == "04777852-679e-11ee-9fe8-db6e630a3836")
 					{
 						// 2023-10-11 0700 - E175 - Baby Alien Schlongs - Sleep Hacks (03d6e61c-679e-11ee-a7ba-0fbfecebf62d).mp3
 						seasonInt = 6;
 					}
-					else if (guid == "19e1229e-6d19-11ee-bd21-f79bbe91ead3")
+					else if (guid == "19e1229e-6d19-11ee-bd21-f79bbe91ead3" ||
+					         guid == "182e2294-6d19-11ee-9b09-bf823737c5bc")
 					{
 						// 2023-10-18 0700 - E176 - Tomorrow Is Chores - Naughty Naked Video Games  (19e1229e-6d19-11ee-bd21-f79bbe91ead3).mp3
 						seasonInt = 6;
 					}
-					else if (guid == "d0deef90-729a-11ee-aff4-83b381d8c635")
+					else if (guid == "d0deef90-729a-11ee-aff4-83b381d8c635" ||
+					         guid == "ceab9b4c-729a-11ee-89db-13851b0622c4")
 					{
 						// 2023-10-25 0700 - E177 - Appropriate Squirts - Key West Bachelorette Weekend (d0deef90-729a-11ee-aff4-83b381d8c635).mp3
 						seasonInt = 6;
 					}
-					else if (guid == "93f7faec-9ebc-11ee-b0ab-47000b1f6dca")
+					else if (guid == "93f7faec-9ebc-11ee-b0ab-47000b1f6dca" ||
+					         guid == "995f3ea0-9ebc-11ee-ad58-07c43226c3b1")
 					{
 						// 2023-12-20 0800 - E185 - It's Scary Out There - Wheel of Years (93f7faec-9ebc-11ee-b0ab-47000b1f6dca).mp3
 						seasonInt = 6;
 					}
-					else if (guid == "73e79d30-9ec5-11ee-b6d7-639b5cea62fd")
+					else if (guid == "73e79d30-9ec5-11ee-b6d7-639b5cea62fd" || 
+					         guid == "787ea686-9ec5-11ee-9513-139283bb095e")
 					{
 						// 2023-12-27 0800 - E186 - Assholes and Ice Skates - Fart Drama (73e79d30-9ec5-11ee-b6d7-639b5cea62fd).mp3
 						seasonInt = 6;
 					}
-					else if (guid == "7717ac22-a9b3-11ee-8a77-a7b28706223d")
+					else if (guid == "7717ac22-a9b3-11ee-8a77-a7b28706223d" || 
+					         guid == "798108c8-a9b3-11ee-9443-4b1af98d6e7c")
 					{
 						// 2024-01-03 0800 - E187 - Getting Our Dicks Wet In The New Year - Signs from Howard Stern (7717ac22-a9b3-11ee-8a77-a7b28706223d).mp3
 						seasonInt = 6;
 					}
-					else if (guid == "b30cf3e6-c541-11ee-9167-67f3db2cf565")
+					else if (guid == "b30cf3e6-c541-11ee-9167-67f3db2cf565" ||
+					         guid == "e8a2c094-c541-11ee-af51-eb88f9a1c0b6")
 					{
 						// 024-02-07 0800 - E192 - In The Owl City Lab - Andrew Got A Cock (b30cf3e6-c541-11ee-9167-67f3db2cf565).mp3
 						seasonInt = 6;
 					}
-					else if (guid == "badc4148-cabf-11ee-acb6-e7ccad1541a1")
+					else if (guid == "badc4148-cabf-11ee-acb6-e7ccad1541a1" ||
+					         guid == "bf4eb0a8-cabf-11ee-a0dd-7f9a4a9ec53d")
 					{
 						// 2024-02-14 0800 - E193 - Buying a Mini Blimp - Naked Floppy Running (badc4148-cabf-11ee-acb6-e7ccad1541a1).mp3
 						seasonInt = 6;
 					}
-					else if (guid == "93169270-d03d-11ee-9fa6-6790a3e1de76")
+					else if (guid == "93169270-d03d-11ee-9fa6-6790a3e1de76" ||
+					         guid == "950f04e0-d03d-11ee-a972-0bc0859fa7b3")
 					{
 						// 2024-02-21 0800 - E194 - Small Dick Mode - 8 Minute Tub Time (93169270-d03d-11ee-9fa6-6790a3e1de76).mp3
 						seasonInt = 6;
 					}
-					else if (guid == "e20e8052-d5bc-11ee-bc84-43392ba46b40")
+					else if (guid == "e20e8052-d5bc-11ee-bc84-43392ba46b40" ||
+					         guid == "e3745a3e-d5bc-11ee-bcf6-5f337637fa48")
 					{
 						// 2024-02-28 0800 - E195 - Gavin is Here for Pleasantries - Season 2022 (e20e8052-d5bc-11ee-bc84-43392ba46b40).mp3
 						seasonInt = 6;
 					}
-					else if (guid == "d6c1c52c-db3b-11ee-acde-ebc74a1073b5")
+					else if (guid == "d6c1c52c-db3b-11ee-acde-ebc74a1073b5" ||
+					         guid == "da7f3b40-db3b-11ee-b6ca-6794ba7153ed")
 					{
 						// 2024-03-06 0800 - E197 - Fidget Guns and Monster Trucks - Death of Umidigi (d6c1c52c-db3b-11ee-acde-ebc74a1073b5).mp3
 						seasonInt = 6;
 					}
-					else if (guid == "11eee356-e63a-11ee-9b99-cbe1235ff40e")
+					else if (guid == "11eee356-e63a-11ee-9b99-cbe1235ff40e" || 
+					         guid == "16b28a00-e63a-11ee-ac95-df62f99e37e7")
 					{
 						// 2024-03-20 0700 - E199 - Discount Pranking - Farts In Written Word (11eee356-e63a-11ee-9b99-cbe1235ff40e).mp3
 						seasonInt = 6;
 					}
-
+					else if (guid == "5917b87c-ebb5-11ee-b8d2-7fd3607e71a1" ||
+					         guid == "620e7c5e-ebb5-11ee-8d47-cf5050ab39a9")
+					{
+						// Season 6 still?
+						// 2024-03-27 070000 - E200 - Alabama Poutine - The Perpetual Food Truck (5917b87c-ebb5-11ee-b8d2-7fd3607e71a1).mp3
+						seasonInt = 6;
+					}
+					else if (guid == "93fe1846-eb58-11ec-8f19-f7c3f51b402d")
+					{
+						//2022-06-15 070000 - E107 - Season 4, Year 3, Volume 1, Episode 107 - Future Us is as Lazy as Current We (93fe1846-eb58-11ec-8f19-f7c3f51b402d).mp3
+						seasonInt = 4;
+					}
+					
 					// Unsure if 139 is season 5 or season 6
 					// 2023-01-24 0800 - S05 E138 - We Are 138 - 8 Hour Fireplace Video (d750e4d4-9b7a-11ed-938b-6bc8afc305a8).mp3
 					// 2023-01-31 0800 - E139 - Are You Feeling Wronged - Silver Medal Friendship (24e307a2-a0f5-11ed-acc6-d371fda63fdc).mp3
@@ -742,15 +842,9 @@ class Program
 					// Missing 196
 					// 2024-02-28 0800 - E195 - Gavin is Here for Pleasantries - Season 2022 (e20e8052-d5bc-11ee-bc84-43392ba46b40).mp3
 					// 2024-03-06 0800 - E197 - Fidget Guns and Monster Trucks - Death of Umidigi (d6c1c52c-db3b-11ee-acde-ebc74a1073b5).mp3
-					
-					if (guid == "5917b87c-ebb5-11ee-b8d2-7fd3607e71a1")
-					{
-						// Season 6 still?
-						// 2024-03-27 070000 - E200 - Alabama Poutine - The Perpetual Food Truck (5917b87c-ebb5-11ee-b8d2-7fd3607e71a1).mp3
-						seasonInt = 6;
-					}
+
 				}
-				else if (podcast.Name == "Face Jam (FIRST Member Ad-Free)")
+				else if (podcast.Name == "Face Jam (FIRST Member Ad-Free)" || podcast.Name == "Face Jam")
 				{
 					// First numbered episode, is actually 38th episide
 					// 2020-12-22 0800 - E30 - Taco Cabana Chicken Tinga & Cheese Poblano Torpedos (a751d6c0-4169-11eb-a11b-3f8929b86a68).mp3
@@ -763,55 +857,57 @@ class Program
 					// 2021-12-06 080000 - Outback Steakhouse Espresso Butter Steak (a141dde2-5488-11ec-9c14-2f340052ee81).mp3
 					// 2021-12-20 080000 - E56 - Sonic Fritos Chili Cheese Wrap & Garlic Butter Bacon Burger (cf25aa24-5f94-11ec-97bd-43ac7e268f1e).mp3
 					
-					// Unsure what is episode 102
-					// 2023-09-26 070000 - E101 - Quiznos Big Fat Greek Sub (5fabc6d2-5bb5-11ee-9717-ffab0ae9fb2a).mp3
-					// 2023-09-27 070000 - Ride Along - Quiznos (e113879c-5beb-11ee-82ba-07d7493fd6a9).mp3
-					// 2023-09-28 070000 - Cat-ering - Quiznos (72c83f88-5bf2-11ee-88dd-aff3eab2f7c5).mp3
-					// 2023-10-03 070000 - Spittin Silly - Frozen Pizza Challenge (3cc7b29a-613f-11ee-b96b-07a2922df77f).mp3
-					// 2023-10-05 150000 - Pringles Taste Test (f11ea1ec-6241-11ee-b4ae-8ba61eecdff2).mp3
-					// 2023-10-10 070000 - Fazoli's Pizza Baked Pasta (784aa38c-66bb-11ee-a410-8b65cac3ade1).mp3
-					// 2023-10-11 150000 - Ride Along - Fazoli's (7094ad70-678f-11ee-ba2a-9f500cba01de).mp3
-					// 2023-10-17 070000 - Spittin Silly - Chuck E Cheese Pizza Comparison (8f4b39b2-69f3-11ee-97d7-7f3e9fbc20ce).mp3
-					// 2023-10-24 070000 - E103 - Potbelly Ring of Fire Sandwich (7c7e50f0-6f5f-11ee-a708-c711c79df990).mp3
-					
-					if (guid == "b1863dea-5783-11eb-9b78-47c1baa1c26f")
+					if (guid == "b1863dea-5783-11eb-9b78-47c1baa1c26f" ||
+					    guid == "b1863dea-5783-11eb-9b78-47c1baa1c26f")
 					{
 						//2021-01-19 080000 - Dairy Queen Rotisserie-Style Chicken Bites & Brownie Dough Blizzard (b1863dea-5783-11eb-9b78-47c1baa1c26f).mp3
 						episodeInt = 32;
 					}
-					else if (guid == "369843e2-6d88-11eb-b9aa-8ba38ba51dca")
+					else if (guid == "369843e2-6d88-11eb-b9aa-8ba38ba51dca" ||
+					         guid == "369843e2-6d88-11eb-b9aa-8ba38ba51dca")
 					{
 						// 2021-02-16 080000 - Red Lobster Wagyu Bacon Cheeseburger (369843e2-6d88-11eb-b9aa-8ba38ba51dca).mp3
 						episodeInt = 34;
 					}
-					else if (guid == "36096f46-9bf0-11eb-a233-0771cf9cf0f8")
+					else if (guid == "36096f46-9bf0-11eb-a233-0771cf9cf0f8" ||
+					         guid == "36096f46-9bf0-11eb-a233-0771cf9cf0f8")
 					{
 						// 2021-04-13 070000 - TGI Fridays Under the Big Top Menu (36096f46-9bf0-11eb-a233-0771cf9cf0f8).mp3
 						episodeInt = 38;
 					}
-					else if (guid == "458ea660-4690-11ed-b73d-776979bb74a2")
+					else if (guid == "458ea660-4690-11ed-b73d-776979bb74a2" ||
+					         guid == "49ba393e-4690-11ed-b6d1-ab546c4a4057")
 					{
 						// 2022-10-10 070000 - Chili's Signature Bar Menu (458ea660-4690-11ed-b73d-776979bb74a2).mp3
 						episodeInt = 77;
 					}
-					else if (guid == "5c405924-a140-11ee-92c4-d703c4298a13")
+					else if (guid == "5c405924-a140-11ee-92c4-d703c4298a13" ||
+					         guid == "4b2d4d30-a141-11ee-b550-4b626fee443a")
 					{
 						// 2024-01-02 080000 - Chuck E Cheese Grown Up Menu (5c405924-a140-11ee-92c4-d703c4298a13).mp3
 						episodeInt = 108;
 					}
-					else if (guid == "57bc256c-2dfc-11ed-87b4-47a32d663c1e")
+					else if (guid == "57bc256c-2dfc-11ed-87b4-47a32d663c1e" ||
+					         guid == "0fe069d8-2dfc-11ed-b5e1-432a80d0165a")
 					{
 						// 2022-09-06 161000 - E1 - Spittin Silly - Theme Song (57bc256c-2dfc-11ed-87b4-47a32d663c1e).mp3
 						episodeInt = -1;
 					}
-					else if (guid == "fe86efb8-ae47-11ee-b0da-d389f0120b00")
+					else if (guid == "fe86efb8-ae47-11ee-b0da-d389f0120b00" ||
+					         guid == "032414f6-ae48-11ee-bf80-cf437ebc56ea")
 					{
 						// 2024-01-09 080000 - E36 - Spittin Silly - Freewheelin (fe86efb8-ae47-11ee-b0da-d389f0120b00).mp3
 						episodeInt = -1;
 					}
+					else if (guid == "784aa38c-66bb-11ee-a410-8b65cac3ade1" ||
+					         guid == "78fe60ac-66bb-11ee-a665-dbca7df3ef20")
+					{
+						// 2023-10-10 070000 - Fazoli's Pizza Baked Pasta (784aa38c-66bb-11ee-a410-8b65cac3ade1).mp3
+						episodeInt = 102;
+					}
 
 				}
-				else if (podcast.Name == "Funhaus Podcast (FIRST Member Ad-Free)")
+				else if (podcast.Name == "Funhaus Podcast (FIRST Member Ad-Free)" || podcast.Name == "Funhaus Podcast")
 				{
 					// No episode 23
 					// 2015-07-01 1443 - Are We GAMES JOURNALISTS  - #22 (00000000-0000-0000-0000-000016000000).mp3
@@ -825,6 +921,8 @@ class Program
 					// 2019-01-02 1400 - 2019 is Gonna Be Awesome! - Dude Soup Podcast #207 (00000000-0000-0000-0000-0000cf000000).mp3
 					// 2019-01-16 2200 - YouTube is Forcing Us to Change Our Content - Dude Soup Podcast #209 (00000000-0000-0000-0000-0000d1000000).mp3
 
+					// No 251
+					
 					// #282 is teh last postfix numbered episode for a while
 
 					// Then we drop into actual season numbers.
@@ -851,6 +949,75 @@ class Program
 						episodeInt = 435;
 					}
 
+
+					if (episodeInt == -1)
+					{
+						var funhausPodcastRegex = new Regex(@"^(.*)-(\s*)#(?<episodeNumber>\d+)$");
+						var match = funhausPodcastRegex.Match(title);
+						if (match.Success)
+						{
+							if (int.TryParse(match.Groups["episodeNumber"].ValueSpan, out int tempEpisodeInt) == true)
+							{
+								episodeInt = tempEpisodeInt;
+							}
+						}
+					}
+					
+					
+					if (episodeInt == -1)
+					{
+						var funhausPodcastRegex = new Regex(@"^(.*)(\s*)#(\s*)(?<episodeNumber>\d+)$");
+						var match = funhausPodcastRegex.Match(title);
+						if (match.Success)
+						{
+							if (int.TryParse(match.Groups["episodeNumber"].ValueSpan, out int tempEpisodeInt) == true)
+							{
+								episodeInt = tempEpisodeInt;
+							}
+						}
+					}
+					
+					
+					
+					if (episodeInt == -1)
+					{
+						var funhausPodcastRegex = new Regex(@"^(.*) (?<episodeNumber>\d+)$");
+						var match = funhausPodcastRegex.Match(title);
+						if (match.Success)
+						{
+							if (int.TryParse(match.Groups["episodeNumber"].ValueSpan, out int tempEpisodeInt) == true)
+							{
+								episodeInt = tempEpisodeInt;
+							}
+						}
+					}
+
+					if (guid == "00000000-0000-0000-0000-0000ef000000")
+					{
+						// 2019-08-14 210000 - Twitch Owns Ninja's Fans - Dude Soup Podcast (00000000-0000-0000-0000-0000ef000000).mp3
+						episodeInt = 239;
+					}
+					else if (guid == "00000000-0000-0000-0000-0000f0000000")
+					{
+						// 2019-08-21 210000 - Apex Legends Picking Fights With Gamers - Dude Soup Podcast (00000000-0000-0000-0000-0000f0000000).mp3
+						episodeInt = 240;
+					}
+					else if (guid == "00000000-0000-0000-0000-0000f1000000")
+					{
+						// 2019-08-28 210000 - Is the Disney+ Catalog Worthy Enough to Lift Thor's Hammer - Dude Soup Podcast (00000000-0000-0000-0000-0000f1000000).mp3
+						episodeInt = 241;
+					}
+					else if (guid == "00000000-0000-0000-0000-0000f2000000")
+					{
+						// 2019-09-04 210000 - Troy Baker and Nolan North Are In Everything - Dude Soup Podcast (00000000-0000-0000-0000-0000f2000000).mp3
+						episodeInt = 242;
+					}
+					else if (guid == "5476bdbc-a600-11ea-91ac-5f0dd9561553")
+					{
+						// 2020-06-04 020000 - Black Lives Matter - Dude Soup Podcast (5476bdbc-a600-11ea-91ac-5f0dd9561553).mp3
+						episodeInt = 181;
+					}
+
 					// Later we swap from season episode to global episode number.
 					// 2022-12-07 1400 - S08 E47 - Live from Our Brand New Completely Empty Studio! - Funhaus Podcast (f5fc7ef4-75ee-11ed-8557-2b8ca9348681).mp3
 					// 2022-12-14 1400 - S08 E408 - All We Want for Christmas is Death Stranding 2 - Funhaus Podcast (993a5764-7b7e-11ed-ae45-3fcfb184407a).mp3
@@ -869,39 +1036,45 @@ class Program
 						episodeInt = -1;
 					}
 				}
-				else if (podcast.Name == "Hypothetical Nonsense (FIRST Member Ad-Free)")
+				else if (podcast.Name == "Hypothetical Nonsense (FIRST Member Ad-Free)" || podcast.Name == "Hypothetical Nonsense")
 				{
-					if (guid == "602f6064-597b-11ee-b43d-c75f60d46582")
+					if (guid == "602f6064-597b-11ee-b43d-c75f60d46582" ||
+					    guid == "62513d18-597b-11ee-b9ec-8b5b0ff24623")
 					{
 						// 2023-09-25 2000 - TAKING A HIT OF THE SHAQ PIPE (602f6064-597b-11ee-b43d-c75f60d46582).mp3
 						episodeInt = 4;
 					}
-					else if (guid == "37a28184-6494-11ee-ab26-87b731b98b89")
+					else if (guid == "37a28184-6494-11ee-ab26-87b731b98b89" ||
+					         guid == "359a34f4-6494-11ee-b832-cfbb4e6bdd0f")
 					{
 						//2023-10-09 200000 - E4 - Relationship Red Flags (37a28184-6494-11ee-ab26-87b731b98b89).mp3
 						episodeInt = 6;
 					}
-					else if (guid == "a0a57490-88a5-11ee-b124-eb775b6270b5")
+					else if (guid == "a0a57490-88a5-11ee-b124-eb775b6270b5" ||
+					         guid == "cdda7e42-88a5-11ee-9e1a-7f9f7ac5f4e8")
 					{
 						// 2023-11-27 210000 - E11 - The ULTIMATE Road Trip (a0a57490-88a5-11ee-b124-eb775b6270b5).mp3
 						episodeInt = 13;
 					}
 				}
-				else if (podcast.Name == "Must Be Dice (FIRST Member Ad-Free)")
+				else if (podcast.Name == "Must Be Dice (FIRST Member Ad-Free)" || podcast.Name == "Must Be Dice")
 				{
-					if (guid == "855db4d4-c2bf-11ec-a890-778d01c8fd9d")
+					if (guid == "855db4d4-c2bf-11ec-a890-778d01c8fd9d" ||
+					    guid == "5a37c632-c2bf-11ec-902e-d3bf5e3862fa")
 					{
 						// 2022-04-24 0700 - Stranger Than Stranger Things - Paradise Path RPG Ep 1 (855db4d4-c2bf-11ec-a890-778d01c8fd9d).mp3
 						seasonInt = 1;
 						episodeInt = 1;
 					}
-					else if (guid == "15cb58ea-c843-11ec-843f-e77608c59636")
+					else if (guid == "15cb58ea-c843-11ec-843f-e77608c59636" ||
+					         guid == "04e78f9e-c843-11ec-a8f5-af5ec1a3defc")
 					{
 						// 2022-05-01 0700 - Trouble in Paradise - Paradise Path RPG Ep 2 (15cb58ea-c843-11ec-843f-e77608c59636).mp3
 						seasonInt = 1;
 						episodeInt = 2;
 					}
-					else if (guid == "d65fa1d8-cda2-11ec-b43f-ef5b8f967939")
+					else if (guid == "d65fa1d8-cda2-11ec-b43f-ef5b8f967939" ||
+					         guid == "b717eac4-cda2-11ec-b23f-6398ef3bc489")
 					{
 						// 2022-05-08 0700 - Mystery of the Humongous Fungus - Paradise Path RPG Ep 3 (d65fa1d8-cda2-11ec-b43f-ef5b8f967939).mp3
 						seasonInt = 1;
@@ -919,48 +1092,56 @@ class Program
 						seasonInt = 1;
 						episodeInt = 7;
 					}
-					else if (guid == "7974e882-4cb1-11ed-bba0-9fd4b0fa31d0")
+					else if (guid == "7974e882-4cb1-11ed-bba0-9fd4b0fa31d0" ||
+					         guid == "5194fed8-4cb1-11ed-b5f1-8b661ff763c6")
 					{
 						// 2022-10-17 1300 - S02 E1 - Play, You Fools! - Super Princess Rescue Quest RPG Ep 1 (7974e882-4cb1-11ed-bba0-9fd4b0fa31d0).mp3
 						episodeInt = 11;
 					}
-					else if (guid == "54143a44-599e-11ed-9e1b-dba62af9d44b")
+					else if (guid == "54143a44-599e-11ed-9e1b-dba62af9d44b" ||
+					         guid == "34bd255c-599e-11ed-93d5-c37fd2ed6985")
 					{
 						// 2022-11-01 0700 - S02 E2 - A Hero Will Fall - Super Princess Rescue Quest RPG Ep 2 (54143a44-599e-11ed-9e1b-dba62af9d44b).mp3
 						episodeInt = 12;
 					}
-					else if (guid == "9b71d468-5f2b-11ed-96c4-7fb5835ff94a")
+					else if (guid == "9b71d468-5f2b-11ed-96c4-7fb5835ff94a" ||
+					         guid == "7c930512-5f2b-11ed-859d-43f748da16c3")
 					{
 						// 2022-11-08 1400 - S02 E3 - Last Rites of the Great Frog King - Super Princess Rescue Quest RPG Ep 3 (9b71d468-5f2b-11ed-96c4-7fb5835ff94a).mp3
 						episodeInt = 13;
 					}
-					else if (guid == "0da09b8e-6222-11ed-8edd-676a38c78e3a")
+					else if (guid == "0da09b8e-6222-11ed-8edd-676a38c78e3a" ||
+					         guid == "ec442e42-6221-11ed-b4c6-db441a3c1eab")
 					{
 						// 2022-11-14 1400 - S02 E4 - We Hold the Frog King's Oath Fulfilled - Super Princess Rescue Quest RPG Ep 4 (0da09b8e-6222-11ed-8edd-676a38c78e3a).mp3
 						episodeInt = 14;
 					}
-					else if (guid == "87b6f39a-6831-11ed-b461-f7ecba4f8cfc")
+					else if (guid == "87b6f39a-6831-11ed-b461-f7ecba4f8cfc" ||
+					         guid == "623c8616-6831-11ed-8a8e-63be7e3cb80f")
 					{
 						// 2022-11-21 1400 - S02 E5 - To Die Fighting Side By Side with a Rat - Super Princess Rescue Quest RPG Ep 5 (87b6f39a-6831-11ed-b461-f7ecba4f8cfc).mp3
 						episodeInt = 15;
 					}
-					else if (guid == "7ebdb894-6bb2-11ed-8f04-db104c00088f")
+					else if (guid == "7ebdb894-6bb2-11ed-8f04-db104c00088f" ||
+					         guid == "543c0bac-6bb2-11ed-bdaf-6f5d38f1dc10")
 					{
 						// 2022-11-28 1400 - S02 E6 - Taking the Battle to the Skies - Super Princess Rescue Quest RPG Ep 6 (7ebdb894-6bb2-11ed-8f04-db104c00088f).mp3
 						episodeInt = 16;
 					}
-					else if (guid == "b6ec7bac-72cd-11ed-8ffb-e383de1638ba")
+					else if (guid == "b6ec7bac-72cd-11ed-8ffb-e383de1638ba" ||
+					         guid == "88ce688e-72cd-11ed-a96b-b3f3ad2f1656")
 					{
 						// 2022-12-05 1400 - S02 E7 - Neville's Meat is Back on the Menu - Super Princess Rescue Quest RPG Ep 7 (b6ec7bac-72cd-11ed-8ffb-e383de1638ba).mp3
 						episodeInt = 17;
 					}
-					else if (guid == "d71ffb4a-7a54-11ed-8082-b7c62a3d5e51")
+					else if (guid == "d71ffb4a-7a54-11ed-8082-b7c62a3d5e51" ||
+					         guid == "b1062588-7a54-11ed-9621-d73147cb30f0")
 					{
 						// 2022-12-12 2000 - S02 E19 - Flogging the Cyclops - Super Princess Rescue Quest RPG Ep 8 (d71ffb4a-7a54-11ed-8082-b7c62a3d5e51).mp3
 						episodeInt = 18;
 					}
 				}
-				else if (podcast.Name == "Off Topic (FIRST Member Ad-Free)")
+				else if (podcast.Name == "Off Topic (FIRST Member Ad-Free)" || podcast.Name == "Off Topic")
 				{
 					if (guid == "00000000-0000-0000-0000-00009b000000")
 					{
@@ -1021,14 +1202,158 @@ class Program
 					}
 					
 				}
-				else if (podcast.Name == "OT3 Podcast (FIRST Member Ad-Free)")
+				else if (podcast.Name == "OT3 Podcast (FIRST Member Ad-Free)" || podcast.Name == "OT3 Podcast")
 				{
-					if (guid == "2e6ae14c-0c35-11ec-87f2-bf6f978fb24d")
+					// The first few episodes never made it to audio podcast, these are all episode adjusted to match RT site.
+					if (guid == "c4022560-e5a9-11eb-8416-afa3ee30c428")
 					{
-						// 2021-09-03 0700 - What Fanfiction Trope Are You (2e6ae14c-0c35-11ec-87f2-bf6f978fb24d).mp3
-						episodeInt = 8;
+						episodeInt = 12;
+					}
+					else if (guid == "ebc5e47a-eb2a-11eb-9c0a-ef3d096d1a3d")
+					{
+						episodeInt = 13;
+					}
+					else if (guid == "9e422a2c-f0a9-11eb-86bd-1fb8ae90c81c")
+					{
+						episodeInt = 14;
+					}
+					else if (guid == "cfe27680-f640-11eb-95ea-d7e25d844805")
+					{
+						episodeInt = 15;
+					}
+					else if (guid == "7d5d7588-fbb6-11eb-a136-73bd1133f60e")
+					{
+						episodeInt = 16;
+					}
+					else if (guid == "39fe349a-0128-11ec-85da-439ce6a006f3")
+					{
+						episodeInt = 17;
+					}
+					else if (guid == "3cb820ce-06a5-11ec-bf52-f385be38511f")
+					{
+						episodeInt = 18;
+					}
+					else if (guid == "2e6ae14c-0c35-11ec-87f2-bf6f978fb24d")
+					{
+						episodeInt = 19;
 						seasonInt = 2;
 					}
+					else if (guid == "f45fd0ce-11b2-11ec-9d8a-8fde4616556a")
+					{
+						episodeInt = 20;
+					}
+					else if (guid == "a329d9b4-1745-11ec-9ecf-73347b8c6a07" ||
+					         guid == "6ba365e0-1746-11ec-9e6c-5f6eedabf0e0")
+					{
+						episodeInt = 21;
+					}
+					else if (guid == "206ee97c-1cc4-11ec-b7e9-6f0d3137946c" ||
+					         guid == "dd12a914-1cc0-11ec-b997-af0380cebd6e")
+					{
+						episodeInt = 22;
+						seasonInt = 2;
+					}
+					else if (guid == "cdd881b6-2234-11ec-bc6b-731228d3407b" ||
+					         guid == "e2107dd2-2234-11ec-ba1f-c308f0c1d9d4")
+					{
+						episodeInt = 23;
+					}
+					else if (guid == "abbd3d28-27cb-11ec-98fb-2b4d20404e1a" ||
+					         guid == "c683c618-27cb-11ec-bc06-4fdb5ff4ab5d")
+					{
+						episodeInt = 24;
+					}
+					else if (guid == "92d8ce5a-2d41-11ec-8e9b-376cc4a28457" ||
+					         guid == "79414fe4-2d41-11ec-b7b0-13f146c5cbfe")
+					{
+						episodeInt = 25;
+					}
+					else if (guid == "3156417e-32a2-11ec-9cee-e7bd220254e5" ||
+					         guid == "3a41bb38-32a2-11ec-b187-9bf21896df11")
+					{
+						episodeInt = 26;
+					}
+					else if (guid == "1a13ac16-383a-11ec-a009-7b463a2978be" ||
+					         guid == "28792808-383a-11ec-a0f7-2bfe1bd2c112")
+					{
+						episodeInt = 27;
+						seasonInt = 2;
+					}
+					else if (guid == "0a233108-3dc3-11ec-a6b0-9b389d0a400f" ||
+					         guid == "303a94c6-3dc3-11ec-973e-5ffbc5c1b67a")
+					{
+						episodeInt = 28;
+					}
+					else if (guid == "214134a2-4354-11ec-9a29-c7c4f487c81d" ||
+					         guid == "7295890c-4354-11ec-881e-67dd0fc155fa")
+					{
+						episodeInt = 29;
+					}
+					else if (guid == "613bf43a-48c6-11ec-be2f-e339af05c4db" ||
+					         guid == "6df3443a-48c6-11ec-bdd0-d7f99125894f")
+					{
+						episodeInt = 30;
+					}
+					else if (guid == "c975f06c-4d87-11ec-b81a-5782d5f0a7e7" ||
+					         guid == "cb1dbcf6-4d87-11ec-bd21-e3f41fc25d7a")
+					{
+						episodeInt = 31;
+					}
+					else if (guid == "ff3db3ec-53bd-11ec-ae1d-fbfa32cb97e3" ||
+					         guid == "fcdaab82-53bd-11ec-8f1b-eb60d1c8e55d")
+					{
+						episodeInt = 32;
+					}
+					else if (guid == "c10c4eee-594e-11ec-94dc-bf61f8b3c424" ||
+					         guid == "c26d3cee-594e-11ec-b361-d32353bf38c4")
+					{
+						episodeInt = 33;
+					}
+					else if (guid == "bd3b5d8a-5ec3-11ec-9c4c-dbf098ff5684" ||
+					         guid == "becc28c8-5ec3-11ec-af9a-77bc38d63513")
+					{
+						episodeInt = 34;
+					}
+
+					if (seasonInt == 3)
+					{
+						episodeInt -= 22;
+					}
+						
+					// 2021-10-16 070000 - S02 E13 - The Kingdom Hearts Fandom ().mp3
+					// 2021-10-23 070000 - S02 E14 - Monsters You Want to Bang ().mp3
+					// 2021-10-30 070000 - Bones or No Bones - TikTok Explained ().mp3
+					// 2021-11-06 070000 - S02 E16 - Internet Community Changes the Media Landscape - NaNoWriMo ().mp3
+					// 2021-11-13 080000 - S02 E17 - Real Vampires in New Orleans ().mp3
+					// 2021-11-20 080000 - S02 E18 - Is Neopets Run By Scientologists ().mp3
+					// 2021-11-27 080000 - S02 E19 - The Vampire Diaries with Michael Jones ().mp3
+					// 2021-12-04 080000 - S02 E20 - Traumatizing a Fanfiction Author ().mp3
+					// 2021-12-11 080000 - S02 E21 - A Fanfiction Writer to Published Novelist Talks To Us! ().mp3
+					// 2021-12-18 080000 - S02 E22 - What's Your Dirty Pleasure From 2021 ().mp3
+					// 2022-02-15 080000 - S03 E23 - Supernatural 101 - All 15 Seasons Explained (7f937a64-8b99-11ec-af74-23019c9f2744).mp3
+					// 2022-02-22 080000 - S03 E24 - Did Wincest Win (wSpecial Guest BlackKrystel) (7d4d7546-9109-11ec-bc89-a38f66c47022).mp3
+					// 2022-03-01 080000 - S03 E25 - Supernatural 301 - The Origin Story of Wincest (b65afda6-98b4-11ec-ae02-8f9d7fe8fd2e).mp3
+					// 2022-03-08 080000 - S03 E26 - Spider-Man's Most Dangerous Foe - Broadway (3a2bd750-9c15-11ec-b790-ff6a7ccc503e).mp3
+					// 2022-03-15 070000 - S03 E27 - Star Wars 101 - Skywalker Family DRAMA (wSpecial Guest Andy Blanchard) (cccbe652-a3b0-11ec-b05c-1b7f3d428c39).mp3
+					// 2022-03-22 070000 - S03 E28 - Star War 201 - What the Hell Is the 'Force' (54b01350-a6d0-11ec-869b-6fc36c60f49e).mp3
+					// 2022-03-29 070000 - S03 E29 - Star Wars 301 - Who's Kissing Who (wSpecial Guest Blaine Gibson) (10234b8a-ac89-11ec-a38b-87aa78ceb7f1).mp3
+					// 2022-04-05 070000 - S03 E30 - Can Eldritch Horror Be Sexy - The Magnus Archives (c6cc6810-b230-11ec-bec0-ab542c4a6126).mp3
+					// 2022-04-26 070000 - S03 E31 - Vampire Chronicles 101 - Who Would You Share a Coffin With (Anne Rice) (2681f1de-c290-11ec-8c9a-63722968fac2).mp3
+					// 2022-05-03 070000 - S03 E32 - Anne Rice Vampires and Crucifixes- A Tale As Old As Time (4a3b2a88-c82a-11ec-8379-af9ec82cc097).mp3
+					// 2022-05-10 070000 - S03 E33 - Our Flag Means Death - The Funky Gay Pirate Show (f1e9976c-cfad-11ec-bf37-d7b02ecfa747).mp3
+					// 2022-05-17 070000 - S03 E34 - Heartstopper - The Gay Highschool Romance We All Wanted (d9e74e0e-d343-11ec-b0de-d7ec37f934ea).mp3
+					// 2022-05-24 070000 - S03 E35 - Klaine - Glee Wasn't Great but at Least It Had Gay Representation (cd044692-d91f-11ec-93be-8746c4ea21df).mp3
+					// 2022-06-01 070000 - S03 E36 - From Smut to Screen - Why is it SO POPULAR (ae8a4dae-e123-11ec-8786-ffcf5bb5dbe6).mp3
+					// 2022-06-14 070000 - S03 E37 - Stranger Things And Kate Bush (61242030-eb6e-11ec-a72c-7f16a7fea5f5).mp3
+					// 2022-06-22 194930 - S03 E38 - Charmed - Was It Too Much Nipple and Not Enough Plot wMatt Bragg (ee0b8882-f23d-11ec-991c-53ead9428054).mp3
+					// 2022-06-28 070000 - S03 E39 - Doctor Who 101 but Wibbly Wobbly (616388e8-f63a-11ec-a7f6-33d69353c8f1).mp3
+					// 2022-07-12 070000 - S03 E40 - Our Final Episode - Harry Potter & All the Young Dudes Fanfiction (81450054-ff15-11ec-8fec-b7138c46b901).mp3
+					// 
+					
+					
+					
+					
+					/*
 					else if (guid == "a329d9b4-1745-11ec-9ecf-73347b8c6a07")
 					{
 						// 2021-09-17 0700 - S02 E10 - Lord of the Rings and Memes (a329d9b4-1745-11ec-9ecf-73347b8c6a07).mp3
@@ -1041,8 +1366,13 @@ class Program
 						episodeInt = 10;
 						seasonInt = 2;
 					}
+					else if (guid == "dd12a914-1cc0-11ec-b997-af0380cebd6e")
+					{
+						seasonInt = 2;
+					}
+					*/
 				}
-				else if (podcast.Name == "Red Web (FIRST Member Ad-Free)")
+				else if (podcast.Name == "Red Web (FIRST Member Ad-Free)" || podcast.Name == "Red Web")
 				{
 					if (guid == "d96d1270-a472-11eb-ab80-9b12c8658daf")
 					{
@@ -1079,14 +1409,15 @@ class Program
 						// 2024-03-11 070000 - S02 E178 - What Is the Origin of This Creepy Urban Legend, Bunny Man (a34d0b12-dd6f-11ee-a00c-475df08519d2).mp3
 						episodeInt = 179;
 					}
-					else if (guid == "3c1df836-5c38-11eb-90b9-8323a659fca3")
+					else if (guid == "3c1df836-5c38-11eb-90b9-8323a659fca3" || 
+					         guid == "3c1df836-5c38-11eb-90b9-8323a659fca3")
 					{
 						// Is more of a supp episode. 
 						// 2021-01-22 080000 - S02 E24 - Red Web Radio (3c1df836-5c38-11eb-90b9-8323a659fca3).mp3
 						episodeInt = -1;
 					}
 				}
-				else if (podcast.Name == "Rooster Teeth Podcast (FIRST Member Ad-Free)")
+				else if (podcast.Name == "Rooster Teeth Podcast (FIRST Member Ad-Free)" || podcast.Name == "Rooster Teeth Podcast")
 				{
 					var rtpEpisodeRegex = new Regex(@"#(?<episodeNumber>\d+)([ ]*)$");
 					var match = rtpEpisodeRegex.Match(title);
@@ -1104,18 +1435,20 @@ class Program
 						pubDate = pubDate.AddMinutes(10);
 					}
 
-					if (guid == "8946ad28-e31d-11ee-a590-175b7df13273")
+					if (guid == "8946ad28-e31d-11ee-a590-175b7df13273" ||
+					    guid == "91bbdfe6-e31d-11ee-9474-ebf1ccbdcba7")
 					{
 						// 2024-03-18 190000 - E794 - The Rooster Teeth Podcast Live (8946ad28-e31d-11ee-a590-175b7df13273).mp3
 						episodeInt = 793;
 					}
-					else if (guid == "7f23714c-e871-11ee-8888-836dbfd571bc")
+					else if (guid == "7f23714c-e871-11ee-8888-836dbfd571bc" ||
+					         guid == "77d83cec-e871-11ee-9e81-b765e828498e")
 					{
 						// 2024-03-25 190000 - E793 - Venmo vs Cashapp (7f23714c-e871-11ee-8888-836dbfd571bc).mp3
 						episodeInt = 794;
 					}
 				}
-				else if (podcast.Name == "Ship Hits The Fan (FIRST Member Ad-Free)")
+				else if (podcast.Name == "Ship Hits The Fan (FIRST Member Ad-Free)" || podcast.Name == "Ship Hits The Fan")
 				{
 					// 2022-04-12 070000 - S01 E7 - Shifting Into Reverse Sinks the SS Norge - Ship Hits the Fan Podcast (722fd31e-ba14-11ec-a08f-77b2572bc51e).mp3
 					// 2022-04-19 070000 - S01 E8 - A Shipwreck Graveyard Claims the Edmund Fitzgerald - Ship Hits the Fan Podcast (3ab8122c-bfa3-11ec-bc39-1beb97a70bf8).mp3
@@ -1146,7 +1479,7 @@ class Program
 					// 2023-04-04 070000 - S04 - What Sunk the Floating Crypto Bro Utopia - Ship Hits the Fan Podcast (b9d48e10-d270-11ed-bdca-73130a32b010).mp3
 					// 2023-04-18 070000 - S05 E45 - Germany Sinks the RMS Lusitania - Ship Hits the Fan Podcast (d540b4d0-dd56-11ed-a1bb-53328680e463).mp3
 				}
-				else if (podcast.Name == "So... Alright (FIRST Member Ad-Free)")
+				else if (podcast.Name == "So... Alright (FIRST Member Ad-Free)" || podcast.Name == "So... Alright")
 				{
 					if (guid == "7316ad24-4e75-11ee-9051-bb3bc7db730a")
 					{
@@ -1155,17 +1488,25 @@ class Program
 						// 2023-09-19 0700 - S01 E4 - This One Goes to 11 (7b8d7400-531c-11ee-8155-6fa1067b4a18).mp3
 						episodeInt = 3;
 					}
-					else if (guid == "213367dc-8254-11ee-b7d8-7798dd0fd8d5")
+					else if (guid == "dcdb748e-5bf8-11ee-80a8-4fa6df58d975")
+					{
+						// 2023-09-26 070000 - E5 - Second Time's a Charm (dcdb748e-5bf8-11ee-80a8-4fa6df58d975).mp3
+						seasonInt = 1;
+					}
+					else if (guid == "213367dc-8254-11ee-b7d8-7798dd0fd8d5" ||
+					         guid == "23e1bd58-8254-11ee-94b6-5bb9af6ceeeb")
 					{
 						// E12 - Fantastic Man (213367dc-8254-11ee-b7d8-7798dd0fd8d5).mp3
 						seasonInt = 1;
 					}
-					else if (guid == "78f7be26-c473-11ee-a2d7-17bf8060e49d")
+					else if (guid == "78f7be26-c473-11ee-a2d7-17bf8060e49d" ||
+					         guid == "9cd2b378-c473-11ee-a96b-9fb30dff80c8")
 					{
 						// E24 - Ephemeral Ants (78f7be26-c473-11ee-a2d7-17bf8060e49d).mp3
 						seasonInt = 2;
 					}
-					else if (guid == "c9ff103a-eaed-11ee-be0f-9f74d46fd564")
+					else if (guid == "c9ff103a-eaed-11ee-be0f-9f74d46fd564" ||
+					         guid == "a509117c-eaed-11ee-a3fa-dfa62eec9ae4")
 					{
 						// 2024-03-26 070000 - E31 - Mall Thoughts (c9ff103a-eaed-11ee-be0f-9f74d46fd564).mp3
 						seasonInt = 2;
@@ -1343,10 +1684,217 @@ class Program
 					// 2022-02-13 080000 - S02 E49 - We Like The Slop (19f10ce6-8b92-11ec-bee3-bfa285442452).mp3
 					// 2022-02-20 080000 - S02 E50 - Now That's What I Call Monsters (5eed4a04-90ff-11ec-9611-f31056cb5949).mp3
 				}
-				else if (podcast.Name == "Trash for Trash (FIRST Member Ad-Free)")
+				else if (podcast.Name == "Trash for Trash (FIRST Member Ad-Free)" || podcast.Name == "Trash for Trash")
 				{
 					// Perfect, no notes.
 				}
+				else if (podcast.Name == "Black Box Down")
+				{
+					// Perfect, no notes.
+				}
+				else if (podcast.Name == "Filmhaus Podcast")
+				{
+					// There are no numbers, not really anything to do.
+					// We can use GuidStrToInt but then halfway through we change to actual so that won't work.
+				}
+				else if (podcast.Name == "Glitch Please")
+				{
+					if (guid == "00000000-0000-0000-0000-00001b000000")
+					{
+						// 2017-12-01 180000 - Return Of The Low Ping Bastards (00000000-0000-0000-0000-00001b000000).mp3
+						episodeInt = 27;
+					}
+					var glitchPleaseRegex = new Regex(@"^(.*)-(\s*)#(?<episodeNumber>\d+)$");
+					var match = glitchPleaseRegex.Match(title);
+					if (match.Success)
+					{
+						if (int.TryParse(match.Groups["episodeNumber"].ValueSpan, out int tempEpisodeInt) == true)
+						{
+							episodeInt = tempEpisodeInt;
+						}
+					}
+
+					if (episodeInt == -1)
+					{
+						episodeInt = GuidStrToInt(guid);
+					}
+				}
+				else if (podcast.Name == "Good Morning From Hell")
+				{
+					// No notes, perfect
+				}
+				else if (podcast.Name == "Heroes & Halfwits")
+				{
+					if (guid == "6c4d7f32-ad36-11eb-ab40-cf0bc9502bea")
+					{
+						// 2021-05-05 070000 - Introducing Tales from the Stinky Dragon (6c4d7f32-ad36-11eb-ab40-cf0bc9502bea).mp3
+						// Noop
+					}
+					else
+					{
+						episodeInt = GuidStrToInt(guid);
+						seasonInt = 1;
+						
+						if (episodeInt >= 35 && episodeInt <= 40)
+						{
+							seasonInt = 2;
+							episodeInt -= 34;
+						}
+						else if (episodeInt >= 41 && episodeInt <= 50)
+						{
+							seasonInt = 3;
+							episodeInt -= 40;
+						}
+					}
+				}
+				else if (podcast.Name == "Inside Gaming Roundup")
+				{
+					// There isn't really any episode numbers.
+				}
+				else if (podcast.Name == "No Dumb Answers with Mark & Brad")
+				{
+					if (guid == "f5fade30-86a0-11eb-8f89-1760929da766")
+					{
+						// 2021-03-17 070000 - E3 - Hot Girls Have IBS Feat. Elyse Willems (f5fade30-86a0-11eb-8f89-1760929da766).mp3
+						seasonInt = 1;
+					}
+					else if (guid == "c4243ca8-8c09-11eb-bfd1-6f4dc5d83125")
+					{
+						// 2021-03-24 070000 - E4 - You Can't F Past the Balls (c4243ca8-8c09-11eb-bfd1-6f4dc5d83125).mp3
+						seasonInt = 1;
+					}
+					else if (guid == "52398a40-9194-11eb-a7f6-e31e38b529ac")
+					{
+						// 2021-03-31 070000 - E5 - Brony Liquid & TikTok Cults (52398a40-9194-11eb-a7f6-e31e38b529ac).mp3
+						seasonInt = 1;
+					}
+					else if (guid == "80b1b918-9722-11eb-8ba1-cf91521cf9d7")
+					{
+						// 2021-04-07 070000 - E6 - Bad Btches Doing Jiu-Jitsu (80b1b918-9722-11eb-8ba1-cf91521cf9d7).mp3
+						seasonInt = 1;
+					}
+					else if (guid == "491f1c8c-9c60-11eb-9f8e-276b43c8fa7e")
+					{
+						// 2021-04-14 070000 - E7 - Joseph Stalin - Girl Boss (491f1c8c-9c60-11eb-9f8e-276b43c8fa7e).mp3
+						seasonInt = 1;
+					}
+					else if (guid == "7d6141c2-a20b-11eb-98ea-df2e258863cb")
+					{
+						// 2021-04-21 070000 - E8 - Cancel Culture Must Be Stopped (7d6141c2-a20b-11eb-98ea-df2e258863cb).mp3
+						seasonInt = 1;
+					}
+					else if (guid == "4cdea518-c320-11eb-9965-4354bebbdf0c")
+					{
+						// 2021-06-02 070000 - E9 - Legally Obligated Returns (4cdea518-c320-11eb-9965-4354bebbdf0c).mp3
+						episodeInt = 1;
+						seasonInt = 2;
+					}
+				}
+				else if (podcast.Name == "On The Spot")
+				{
+					// No episode 10, 68, 133, 171
+					var onTheSpotRegex = new Regex(@"^(.*)(-|)(\s*)#(?<episodeNumber>\d+)(\s*)$");
+					var match = onTheSpotRegex.Match(title);
+					if (match.Success)
+					{
+						if (int.TryParse(match.Groups["episodeNumber"].ValueSpan, out int tempEpisodeInt) == true)
+						{
+							episodeInt = tempEpisodeInt;
+						}
+					}
+
+					if (episodeInt == -1)
+					{
+						onTheSpotRegex = new Regex(@"^(.*)(-|)(\s*)#(?<episodeNumber>\d+) (\(|f|F)");
+						match = onTheSpotRegex.Match(title);
+						if (match.Success)
+						{
+							if (int.TryParse(match.Groups["episodeNumber"].ValueSpan, out int tempEpisodeInt) == true)
+							{
+								episodeInt = tempEpisodeInt;
+							}
+						}
+					}
+
+					if (episodeInt == -1)
+					{
+						onTheSpotRegex = new Regex(@"^(.*)-(\s*)(?<episodeNumber>\d*)(\s*)$");
+						match = onTheSpotRegex.Match(title);
+						if (match.Success)
+						{
+							if (int.TryParse(match.Groups["episodeNumber"].ValueSpan, out int tempEpisodeInt) == true)
+							{
+								episodeInt = tempEpisodeInt;
+							}
+						}
+					}
+
+					if (episodeInt == -1)
+					{
+						if (guid == "00000000-0000-0000-0000-00004c000000")
+						{
+							// 2016-11-24 182500 - Forever Alone - On The Spot - A Thanksgiving Special (00000000-0000-0000-0000-00004c000000).mp3
+							episodeInt = 76;
+						}
+						else if (guid == "00000000-0000-0000-0000-000038000000")
+						{
+							// 2016-04-01 160000 - FCK BOIZ NEVER SAY DIE! - #56 with Brent Morin (00000000-0000-0000-0000-000038000000).mp3
+							episodeInt = 56;
+						}
+						else if (guid == "388da800-5ede-11ee-b966-bbc91e8ba6e0")
+						{
+							// 2023-09-29 170000 - Barbies Vs. Hobbits (388da800-5ede-11ee-b966-bbc91e8ba6e0).mp3
+							episodeInt = 186;
+						}
+					}
+				}
+				else if (podcast.Name == "Relationship Goals")
+				{
+					episodeInt = GuidStrToInt(guid);	
+				}
+				else if (podcast.Name == "RWBY Rewind")
+				{
+					var rwbyRewindRegex = new Regex(@"^(.*)-(\s*)#(?<episodeNumber>\d+)$");
+					var match = rwbyRewindRegex.Match(title);
+					if (match.Success)
+					{
+						if (int.TryParse(match.Groups["episodeNumber"].ValueSpan, out int tempEpisodeInt) == true)
+						{
+							episodeInt = tempEpisodeInt;
+						}
+					}
+				}
+				else if (podcast.Name == "Tales from the Stinky Dragon")
+				{
+					if (guid == "36fa2fc2-9e03-11ee-b3a9-4f8947c55357")
+					{
+						// 023-12-19 080000 - E27 - Passé in Perrish - C02 - Ep 27 - The Quick and the Undead (36fa2fc2-9e03-11ee-b3a9-4f8947c55357).mp3
+						seasonInt = 2;
+					}
+					else if (guid == "388bee3c-9eb4-11ee-ace2-cbbc38baa563")
+					{
+						// 2023-12-26 080000 - E28 - Passé in Perrish - C02 - Ep 28 - Rest in Priest (388bee3c-9eb4-11ee-ace2-cbbc38baa563).mp3
+						seasonInt = 2;
+					}
+				}
+				else if (podcast.Name == "Twits and Crits")
+				{
+					if (guid == "00000000-0000-0000-0000-00001f000000")
+					{
+						episodeInt = 31;
+					}
+					
+					var twitsAndCritsRegex = new Regex(@"^(.*)- Episode (?<episodeNumber>\d+)$");
+					var match = twitsAndCritsRegex.Match(title);
+					if (match.Success)
+					{
+						if (int.TryParse(match.Groups["episodeNumber"].ValueSpan, out int tempEpisodeInt) == true)
+						{
+							episodeInt = tempEpisodeInt;
+						}
+					}
+				}
+					
 			
 				#endregion
 
@@ -1405,9 +1953,12 @@ class Program
 					{
 						$" - {episodeInt}",
 						$" - #{episodeInt}",
+						$" -#{episodeInt}",
 						$" #{episodeInt}",
+						$" # {episodeInt}",
 						$" - [{episodeInt}]",
 						$" [{episodeInt}]",
+						$"- Episode {episodeInt}",
 					};
 
 					foreach (var stringTitleReplacement in stringTitleReplacements)
@@ -1421,9 +1972,6 @@ class Program
 					// Remove any extra space
 					title = title.Trim();
 				}
-				
-				// TODO: If episode number is not found we should try get it from the title " - #1"
-				
 				
 				var enclosure = item.SelectSingleNode("enclosure");
 				if (enclosure == null)
@@ -1619,7 +2167,39 @@ class Program
 			"Tales from the Stinky Dragon (FIRST Member Ad-Free)",
 			"The Dogbark Podcast (FIRST Member Ad-Free)",
 			"The Most (FIRST Member Ad-Free)",
-			"Trash for Trash  (FIRST Member Ad-Free)",
+			"Trash for Trash (FIRST Member Ad-Free)",
+			
+			"30 Morbid Minutes",
+			"Always Open",
+			"ANMA",
+			"Annual Pass",
+			"Beneath",
+			"Black Box Down",
+			"D&D, but...",
+			"DEATH BATTLE Cast",
+			"F**kface",
+			"Face Jam",
+			"Filmhaus Podcast",
+			"Funhaus Podcast",
+			"Glitch Please",
+			"Good Morning From Hell",
+			"Heroes & Halfwits",
+			"Hypothetical Nonsense",
+			"Inside Gaming Roundup",
+			"Must Be Dice",
+			"No Dumb Answers with Mark & Brad",
+			"Off Topic",
+			"On The Spot",
+			"OT3 Podcast",
+			"Red Web",
+			"Relationship Goals",
+			"Rooster Teeth Podcast",
+			"RWBY Rewind",
+			"Ship Hits The Fan",
+			"So... Alright",
+			"Tales from the Stinky Dragon",
+			"Trash for Trash",
+			"Twits and Crits",
 			*/
 		};
 		
@@ -1650,6 +2230,19 @@ class Program
 		File.WriteAllText(allmp3sSummary, stringBuilder.ToString());
 		//Console.WriteLine(String.Join("\n", allFileNames));
 		return 0;
+	}
+
+	static int GuidStrToInt(string guid)
+	{
+		if (guid.Length != 36)
+		{
+			return -1;
+		}
+		
+		var guidArray = Guid.Parse(guid).ToByteArray();
+		var intBytes = new byte[4];
+		Array.Copy(guidArray, guidArray.Length - 4, intBytes, 0, intBytes.Length);
+		return BitConverter.ToInt32(intBytes);
 	}
 }
 
