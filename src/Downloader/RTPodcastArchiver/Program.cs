@@ -129,7 +129,7 @@ class Program
 		}
 		catch (Exception err)
 		{
-			Log.Information($"ERROR: Could not create output paths. ({err.Message})");
+			Log.Error($"ERROR: Could not create output paths. ({err.Message})");
 			return 1;
 		}
 
@@ -1566,7 +1566,7 @@ class Program
 				}
 				catch (Exception err)
 				{
-					Log.Information(err, $"Could not download {episodeFilename}.");
+					Log.Error(err, $"Could not download {episodeFilename}.");
 					Debugger.Break();
 				}
 			});
