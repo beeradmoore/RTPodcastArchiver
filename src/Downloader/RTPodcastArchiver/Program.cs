@@ -1926,6 +1926,10 @@ class Program
 						}
 					}
 				}
+				else if (podcast.Name == "unLOCKED - The Official genLOCK Companion Podcast")
+				{
+					// Perfect, no notes.
+				}
 					
 			
 				#endregion
@@ -2304,6 +2308,7 @@ class Program
 			"Tales from the Stinky Dragon",
 			"Trash for Trash",
 			"Twits and Crits",
+			"unLOCKED - The Official genLOCK Companion Podcast",
 			*/
 		};
 		
