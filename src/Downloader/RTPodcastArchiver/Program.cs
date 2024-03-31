@@ -1715,6 +1715,19 @@ class Program
 					// 2022-02-06 080000 - S02 E49 - Don't Feed The Bears (11036ae6-85e0-11ec-bd03-57b9439edf8d).mp3
 					// 2022-02-13 080000 - S02 E49 - We Like The Slop (19f10ce6-8b92-11ec-bee3-bfa285442452).mp3
 					// 2022-02-20 080000 - S02 E50 - Now That's What I Call Monsters (5eed4a04-90ff-11ec-9611-f31056cb5949).mp3
+					
+					// Those above also don't align with online episodes.
+					// 2022:E4 - Fabulous Abacus
+					// 2022:E5 - Don't Feed The Bears
+					// 2022:E6 - We Like The Slop
+					// 2022:E7 - Now That's What I Call Monsters
+
+					
+					
+					// These don't align to release dates with RT site, so ignoring.
+					// 2020:E4 - Quicksand 9/11
+					// 2020:E9 - Smörgås Borg
+					// 2021:E12 - Earthworm Gym
 				}
 				else if (podcast.Name == "Trash for Trash (FIRST Member Ad-Free)" || podcast.Name == "Trash for Trash")
 				{
@@ -1929,6 +1942,29 @@ class Program
 				else if (podcast.Name == "unLOCKED - The Official genLOCK Companion Podcast")
 				{
 					// Perfect, no notes.
+				}
+				else if (podcast.Name == "The Real Canon")
+				{
+					if (guid == "0116d0b4-721d-11eb-932c-4b3a6cc0cddf")
+					{
+						// RSS feed says this is episode 5 and the WandaVision is a bonus episode.
+						// 2021-02-19 080000 - Jim Henson didn't make The Muppets for you (0116d0b4-721d-11eb-932c-4b3a6cc0cddf).mp3
+						episodeInt = 5;
+					}
+				}
+				else if (podcast.Name == "The Most")
+				{
+					if (guid == "aaa70566-38f8-11ec-9ad6-9717101cf2ba")
+					{
+						// 2021-11-01 070000 - E47 - Abduction Junction (aaa70566-38f8-11ec-9ad6-9717101cf2ba).mp3
+						episodeInt = 38;
+						seasonInt = 2;
+					}
+					
+					// These don't align to release dates with RT site, so ignoring.
+					// 2020:E4 - Quicksand 9/11
+					// 2020:E9 - Smörgås Borg
+					// 2021:E12 - Earthworm Gym
 				}
 					
 			
@@ -2309,6 +2345,8 @@ class Program
 			"Trash for Trash",
 			"Twits and Crits",
 			"unLOCKED - The Official genLOCK Companion Podcast",
+			"The Most",
+			"The Real Canon",
 			*/
 		};
 		
