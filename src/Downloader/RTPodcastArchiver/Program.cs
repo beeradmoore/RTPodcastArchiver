@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.Json;
@@ -2093,10 +2094,10 @@ class Program
 					{
 						// For some reason Black Box Down file size does not match actual file size.
 						// So instead we just have to assume we did get all files downloaded correctly.
-						if (podcast.Name == "Black Box Down (FIRST Member Ad-Free)")
-						{
-							shouldDownload = false;
-						}
+						//if (podcast.Name == "Black Box Down (FIRST Member Ad-Free)")
+						//{
+						//	shouldDownload = false;
+						//}
 					}
 				}
 
@@ -2138,16 +2139,75 @@ class Program
 				var tempFileName = Path.Combine(tempDownloadsDirectory, fileName);
 				try
 				{
-					
-					// Use this stream to download the data.
-					using (var stream = await _httpClient.GetStreamAsync(fileSummary.RemoteUrl))
+					using (var response = await _httpClient.GetAsync(fileSummary.RemoteUrl, HttpCompletionOption.ResponseHeadersRead, token))
 					{
-						using (var fileStream = File.Create(tempFileName))
+						response.EnsureSuccessStatusCode();
+
+						// Sometimes the above checks fail us so we need to re-run them here. Checking ETag and content-length if they exist.
+
+						var continueWithDownload = true;
+						
+						if (File.Exists(fileSummary.LocalFilename))
 						{
-							await stream.CopyToAsync(fileStream);
-							fileSummary.ActualLength = fileStream.Length;
+							var eTagHeader = response.Headers.FirstOrDefault(x => x.Key.Equals("ETag", StringComparison.OrdinalIgnoreCase));
+							var contentLength = response.Content.Headers.FirstOrDefault(x => x.Key.Equals("Content-Length", StringComparison.OrdinalIgnoreCase));
+
+							if (eTagHeader.Key is not null && eTagHeader.Value.Any())
+							{
+								var eTagValue = eTagHeader.Value.First();
+								var md5Hash = string.Empty;
+								using (var fileStream = File.OpenRead(fileSummary.LocalFilename))
+								{
+									using (var md5 = MD5.Create())
+									{
+										var hash = await md5.ComputeHashAsync(fileStream, token);
+										md5Hash = BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
+									}
+								}
+
+								if (string.IsNullOrEmpty(md5Hash) == false)
+								{
+									if (md5Hash == eTagValue)
+									{
+										continueWithDownload = false;
+										Log.Information($"ETag ({md5Hash}) matches for {fileSummary.LocalFilename}, skipping.");
+									}
+								}
+							}
+							else if (contentLength.Key is not null && contentLength.Value.Any())
+							{
+								// If we get here the ETag exists and we use that instead.
+								// If ETag does not exist then we use this to check content length as a secondary test.
+								// Keeping in mind we already checked enclosureLength above, but sometimes it lies.
+								string contentLengthValue = contentLength.Value.First() ?? "-1";
+
+								var fileInfo = new FileInfo(fileSummary.LocalFilename);
+								if (long.TryParse(contentLengthValue, out long contentLengthLong) == true)
+								{
+									if (fileInfo.Length == contentLengthLong)
+									{
+										continueWithDownload = false;
+										Log.Information($"File size matches Content-Length ({fileInfo.Length}) for {fileSummary.LocalFilename}, skipping.");
+									}
+								}
+							}
 						}
-						File.Move(tempFileName, fileSummary.LocalFilename, true);
+
+						if (continueWithDownload)
+						{
+							// Use this stream to download the data.
+							using (var stream = await response.Content.ReadAsStreamAsync(token))
+							{
+								using (var fileStream = File.Create(tempFileName))
+								{
+									await stream.CopyToAsync(fileStream, token);
+									await fileStream.FlushAsync(token);
+									fileSummary.ActualLength = fileStream.Length;
+								}
+
+								File.Move(tempFileName, fileSummary.LocalFilename, true);
+							}
+						}
 					}
 				}
 				catch (Exception err)
