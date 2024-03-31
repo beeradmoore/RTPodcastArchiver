@@ -90,7 +90,7 @@ class Program
 		if (File.Exists(fileName) == true)
 		{
 			var newFileName = $"{Path.GetFileNameWithoutExtension(fileName)}.backup.{DateTimeOffset.Now.ToUnixTimeSeconds()}{Path.GetExtension(fileName)}";
-			var backupPath = Path.Combine(Path.GetDirectoryName(fileName), newFileName);
+			var backupPath = Path.Combine(Path.GetDirectoryName(fileName) ?? String.Empty, newFileName);
 			File.Move(fileName, backupPath);
 		}
 	}
@@ -103,6 +103,37 @@ class Program
 		_httpClient.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4.1 Safari/605.1.15");
 			
 		Log.Information($"Using output path: {outputPath}");
+		
+		
+		var tempDownloadsDirectory = Path.Combine(Path.GetTempPath(), "rt_podcast_archiver_downloads");
+		Log.Information($"Using temp downloads path: {tempDownloadsDirectory}");
+		
+		if (Directory.Exists(tempDownloadsDirectory))
+		{
+			var tempPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("D"));
+
+			try
+			{
+				Directory.Move(tempDownloadsDirectory, tempPath);
+				Directory.Delete(tempDownloadsDirectory);
+			}
+			catch (Exception err)
+			{
+				Log.Error(err, "Could not remove old temp data.");
+				return 1;
+			}
+		}
+
+		try
+		{
+			Directory.CreateDirectory(tempDownloadsDirectory);
+		}
+		catch (Exception err)
+		{
+			Log.Error(err, "Could not create new temp directory");
+			return 1;
+		}
+		
 
 		string archivePath = String.Empty;
 		string logPath = String.Empty;
@@ -2103,11 +2134,11 @@ class Program
 
 				var episodeFilename = Path.GetFileName(fileSummary.LocalFilename);
 				Log.Information($"Downloading {episodeFilename}");
-
+				var fileName = Path.GetFileName(fileSummary.LocalFilename);
+				var tempFileName = Path.Combine(tempDownloadsDirectory, fileName);
 				try
 				{
-					var fileName = Path.GetFileName(fileSummary.LocalFilename);
-					var tempFileName = Path.Combine(Path.GetTempPath(), fileName);
+					
 					// Use this stream to download the data.
 					using (var stream = await _httpClient.GetStreamAsync(fileSummary.RemoteUrl))
 					{
@@ -2116,12 +2147,25 @@ class Program
 							await stream.CopyToAsync(fileStream);
 							fileSummary.ActualLength = fileStream.Length;
 						}
-						File.Move(tempFileName, fileSummary.LocalFilename);
+						File.Move(tempFileName, fileSummary.LocalFilename, true);
 					}
 				}
 				catch (Exception err)
 				{
 					Log.Error(err, $"Could not download {episodeFilename}.");
+					if (File.Exists(tempFileName))
+					{
+						try
+						{
+							File.Delete(tempFileName);
+						}
+						catch (Exception err2)
+						{
+							Log.Error(err2, $"Could not delete {tempFileName}.");
+
+						}
+						
+					}
 					//Debugger.Break();
 				}
 			});
