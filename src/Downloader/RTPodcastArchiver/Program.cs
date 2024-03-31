@@ -2013,7 +2013,7 @@ class Program
 				
 				if (episodeInt == -1 && seasonInt == -1)
 				{
-					Log.Information($"No episode or season number found: {title}");
+					Log.Verbose($"No episode or season number found: {title}");
 				}
 				
 
@@ -2246,6 +2246,7 @@ class Program
 								}
 
 								File.Move(tempFileName, fileSummary.LocalFilename, true);
+								Log.Information($"Download success: {fileSummary.LocalFilename}");
 							}
 						}
 					}
