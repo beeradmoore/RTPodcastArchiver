@@ -14,6 +14,7 @@ using System.Text.RegularExpressions;
 using System.Xml;
 using Serilog;
 using Serilog.Core;
+using SQLite;
 
 namespace RTPodcastArchiver;
 
@@ -99,7 +100,11 @@ class Program
 
 	static async Task<int> RunAsync(string outputPath)
 	{
+		#if DEBUG
+		var loadPodcastsFromCache = true;
+		#else
 		var loadPodcastsFromCache = false;
+		#endif
 		
 		_httpClient.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4.1 Safari/605.1.15");
 			
@@ -164,6 +169,12 @@ class Program
 			Log.Error($"ERROR: Could not create output paths. ({err.Message})");
 			return 1;
 		}
+		
+		// Get an absolute path to the database file
+		var databasePath = Path.Combine(archivePath, "database.db");
+
+		var db = new SQLiteConnection(databasePath);
+		db.CreateTable<PodcastEpisode>();
 
 		// Setup logger
 		Log.Logger = new LoggerConfiguration()
@@ -2266,8 +2277,34 @@ class Program
 					Guid = guid,
 					LocalFilename = episodePath,
 					ReportedLength = enclosureLength,
+					PodcastName = podcast.Name,
 				};
 				fileSummaryList.Add(fileSummary);
+
+				PodcastEpisode podcastEpisode;
+				try
+				{
+					podcastEpisode = db.Table<PodcastEpisode>().Single(x => x.PodcastName_Guid == $"{podcast.Name}_{guid}");
+
+					//Debugger.Break();
+				}
+				catch (InvalidOperationException err) when (err.Message == "Sequence contains no matching element")
+				{
+					podcastEpisode = new PodcastEpisode(podcast.Name, guid)
+					{
+						DateAdded = DateTime.Now,
+						FileName = Path.GetFileName(episodePath),
+					};
+					db.Insert(podcastEpisode);
+					//Debugger.Break();
+				}
+				catch (Exception err)
+				{
+					Log.Error(err, "Could get or add item from SQLite database.");
+					Debugger.Break();
+					return 0;
+				}
+				
 
 				// Now to see if we should download the episode or if we already have it.
 				var shouldDownload = true;
@@ -2287,6 +2324,13 @@ class Program
 					if (fileInfo.Length == enclosureLength)
 					{
 						shouldDownload = false;
+
+						// Backfill.
+						if (podcastEpisode.Size == -1)
+						{
+							podcastEpisode.Size = fileInfo.Length;
+							db.Update(podcastEpisode);
+						}
 					}
 					else
 					{
@@ -2311,10 +2355,10 @@ class Program
 					//Log.Information($"File already exists, skipping, {episodeFilename}");
 				}
 			} // end of foreach (var item in items)
-            
-			
-			
-			
+
+
+
+			var lockObject = new object();
 			// We have now looked at every episode for this podcast. Now to download them all.
 			// We use a Parallel.ForEachAsync so we can download them in parallel to speed things up.
 			var parallelOptions = new ParallelOptions()
@@ -2330,6 +2374,36 @@ class Program
 				// Only download if there is a remote URL.
 				if (String.IsNullOrEmpty(fileSummary.RemoteUrl) == true)
 				{
+					return;
+				}
+
+				
+				PodcastEpisode podcastEpisode;
+				try
+				{
+					lock (lockObject)
+					{
+						podcastEpisode = db.Table<PodcastEpisode>().Single(x => x.PodcastName_Guid == $"{fileSummary.PodcastName}_{fileSummary.Guid}");
+					}
+
+					if (podcastEpisode.DateLastDownloaded != DateTime.MinValue)
+					{
+						var calculatedOutputPath = Path.Combine(archivePath, podcastEpisode.PodcastName, podcastEpisode.FileName);
+
+						if (calculatedOutputPath == fileSummary.LocalFilename)
+						{
+							if (File.Exists(Path.Combine(archivePath, podcastEpisode.PodcastName, podcastEpisode.FileName)))
+							{
+								// Unless the episode was updated we don't even need to bother checking the headers.
+								return;
+							}
+						}
+					}
+				}
+				catch (Exception err)
+				{
+					Log.Error(err, "Could not load PodcastEpisode, it should always exist at this point.");
+					Debugger.Break();
 					return;
 				}
 
@@ -2396,18 +2470,39 @@ class Program
 						if (continueWithDownload)
 						{
 							// Use this stream to download the data.
-							using (var stream = await response.Content.ReadAsStreamAsync(token))
+							using (var fileStream = File.Create(tempFileName))
 							{
-								using (var fileStream = File.Create(tempFileName))
+								using (var stream = await response.Content.ReadAsStreamAsync(token))
 								{
 									await stream.CopyToAsync(fileStream, token);
-									await fileStream.FlushAsync(token);
-									fileSummary.ActualLength = fileStream.Length;
 								}
-
-								File.Move(tempFileName, fileSummary.LocalFilename, true);
-								Log.Information($"Download success: {fileSummary.LocalFilename}");
+								await fileStream.FlushAsync(token);
+								using (var md5 = MD5.Create())
+								{
+									var hash = await md5.ComputeHashAsync(fileStream, token);
+									podcastEpisode.MD5Hash = BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
+								}
+								
+								fileSummary.ActualLength = fileStream.Length;
+								podcastEpisode.Size = fileStream.Length;
+								podcastEpisode.DateLastDownloaded = DateTime.Now;
 							}
+
+							File.Move(tempFileName, fileSummary.LocalFilename, true);
+							Log.Information($"Download success: {fileSummary.LocalFilename}");
+						}
+						else
+						{
+							// Backfill.
+							if (podcastEpisode.DateLastDownloaded == DateTime.MinValue)
+							{
+								podcastEpisode.DateLastDownloaded = DateTime.Now;
+							}
+						}
+						
+						lock (lockObject)
+						{
+							db.Update(podcastEpisode);
 						}
 					}
 				}
