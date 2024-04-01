@@ -9,7 +9,6 @@ using System.Web;
 using System.Xml;
 using System.Xml.Linq;
 using RTInternetArchiveUploader;
-using RTPodcastArchiver;
 using RunProcessAsTask;
 using Serilog;
 
@@ -40,6 +39,7 @@ class Program
 
 	static async Task<int> RunAsync(string inputPath)
 	{
+		
 		if (Directory.Exists(inputPath) == false)
 		{
 			Console.WriteLine("ERROR: Input path is not found, did you set it?");
@@ -76,7 +76,8 @@ class Program
 			.WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss}] {Message}{NewLine}{Exception}")
 			.WriteTo.File(Path.Combine(logPath, "rt_podcast_archive_uploader_.log"), rollingInterval: RollingInterval.Day)
 			.CreateLogger();
-
+		
+		Log.Information($"Using base archive path: {inputPath}");
 
 		// First make sure ia is installed.
 		try
