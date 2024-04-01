@@ -1966,6 +1966,162 @@ class Program
 					// 2020:E9 - Smörgås Borg
 					// 2021:E12 - Earthworm Gym
 				}
+				else if (podcast.Name == "CHUMP")
+				{
+					if (episodeInt >= 26)
+					{
+						// Everything after 26 is season 4.
+						seasonInt = 4;
+					}
+				}
+				else if (podcast.Name == "Class Of 198X")
+				{
+					
+					if (guid == "00000000-0000-0000-0000-000010000000")
+					{
+						// 2018-04-25 140000 - TEARS OF A TEENAGE WASTELAND (00000000-0000-0000-0000-000010000000).mp3
+						episodeInt = 16;
+					}
+					else
+					{
+						var classOf198XRegex = new Regex(@"^(.*) - Part (?<episodeNumber>\d+)$");
+						var match = classOf198XRegex.Match(title);
+						if (match.Success)
+						{
+							if (int.TryParse(match.Groups["episodeNumber"].ValueSpan, out int tempEpisodeInt) == true)
+							{
+								episodeInt = tempEpisodeInt;
+								title = title.Replace($" - Part {episodeInt}", string.Empty);
+							}
+						}
+					}
+				}
+				else if (podcast.Name == "Enjoy the Show")
+				{
+					episodeInt = GuidStrToInt(guid);
+				}
+				else if (podcast.Name == "Fan Service")
+				{
+					if (guid == "a320ab90-37b4-11ea-9975-b3280f8f18e9")
+					{
+						// 2020-01-15 160000 - Our First Bad Anime (a320ab90-37b4-11ea-9975-b3280f8f18e9).mp3
+						episodeInt = 75;
+					}
+					else if (guid == "ee4266d2-3d35-11ea-88d2-5b3cd191368d")
+					{
+						// 2020-01-22 160000 - Most Surprising Anime of 2020 (ee4266d2-3d35-11ea-88d2-5b3cd191368d).mp3
+						episodeInt = 76;
+					}
+					else
+					{
+						episodeInt = GuidStrToInt(guid);
+						title = title.Replace($"- #0{episodeInt}", string.Empty).Trim();
+					}
+				}
+				else if (podcast.Name == "I Have Notes")
+				{
+					// Perfect, ironically no notes.
+				}
+				else if (podcast.Name == "Inside Gaming Daily")
+				{
+					// No episode 99
+					// Two episode 127
+					// Two episode 133
+					// Two episode 138
+					
+					// Duplicate episide numbers 161 - 169
+					// 2020-09-02 000507 - S20 E169 - About PS5's Backwards Compatibility... (087c916a-ecb0-11ea-8c26-abf04ce43dd9).mp3
+					// 2020-09-03 001527 - S20 E170 - GameSpot Sponsorship Pisses Off GameSpot (bc5d2a44-ed7a-11ea-a8d7-6b7b5477f2a8).mp3
+					// 2020-09-03 234735 - S20 E161 - 3D Mario Rumors CONFIRMED For Switch! (089f9592-ee41-11ea-99ee-dbe14b890af7).mp3
+					// 2020-09-07 230000 - S20 E162 - No Man's Sky Devs Making 'Huge' Game... hmmmm (042720cc-eef8-11ea-94f3-6f15abd6a58d).mp3
+					// 2020-09-08 231027 - S20 E163 - Series S price puts Microsoft in the lead (d251a250-f228-11ea-9d8c-d3e4aa68e97d).mp3
+					// 2020-09-09 224838 - S20 E164 - Xbox Series X launch date and price confirmed, Game Pass gets better (d530fcc0-f2ee-11ea-8e45-f7818ae460b2).mp3
+					// 2020-09-10 234100 - S20 E165 - It's worse for GameStop than we thought (f4aab5b4-f3c0-11ea-bff3-8368be95cb8a).mp3
+					// 2020-09-11 215031 - S20 E166 - Publisher lied about Control Ultimate Edition (d78f64ee-f482-11ea-86ee-ebc54003d0e5).mp3
+					// 2020-09-15 004130 - S20 E167 - Xbox Series S has one very annoying limitation (e23f1eaa-f6eb-11ea-ba1f-3786b452cec7).mp3
+					// 2020-09-16 010904 - S20 E168 - PS5 takes some heat just before price and date reveal (3fcc6976-f7b2-11ea-940f-67e7b2e8a62f).mp3
+					// 2020-09-17 000531 - S20 E169 - The PS5 will cost $500! (7a19c26a-f878-11ea-85e2-af53013e2faa).mp3
+					// 2020-09-17 235600 - S20 E170 - Good luck getting a PS5 (7c14a368-f941-11ea-ab3c-2b67855473c8).mp3
+					
+					// Two episode 203
+					// Two episode 230
+
+					if (guid == "b123dc7c-2dee-11eb-8d67-f3f66800ccc1")
+					{
+						// 2020-11-24 004143 - S2020 E215 - Cyberpunk 2077 has leaked (b123dc7c-2dee-11eb-8d67-f3f66800ccc1).mp3
+						seasonInt = 20;
+					}
+					else if (guid == "e3dbd3c8-4eef-11eb-885a-fb5ded1ea49e")
+					{
+						// 2021-01-05 010000 - Farewell Inside Gaming Daily (e3dbd3c8-4eef-11eb-885a-fb5ded1ea49e).mp3
+						seasonInt = 20;
+						episodeInt = 244;
+					}
+				}
+				else if (podcast.Name == "Inside Gaming Podcast")
+				{
+					if (guid == "3cf68d5c-e903-11ea-be1d-43c7d2280fdf")
+					{
+						// 2020-08-28 110000 - The Halo Infinite Panic Button - Send News #27 (3cf68d5c-e903-11ea-be1d-43c7d2280fdf).mp3
+						episodeInt = 27;
+						seasonInt = 20;
+					}
+					else if (guid == "3ed116ec-42ae-11eb-a048-7be4a06f42ad")
+					{
+						// 2020-12-25 120000 - The All Questions Episode (3ed116ec-42ae-11eb-a048-7be4a06f42ad).mp3
+						episodeInt = 44;
+						seasonInt = 20;
+					}
+				}
+				else if (podcast.Name == "Murder Room")
+				{
+					episodeInt = GuidStrToInt(guid);
+					
+					// This starts at episode 2 because episode 1 was a pilot.
+				}
+				else if (podcast.Name == "Sportsball")
+				{
+					episodeInt = GuidStrToInt(guid);
+					if (episodeInt >= 27)
+					{
+						seasonInt = 2;
+						episodeInt -= 26;
+					}
+				}
+				else if (podcast.Name == "The Bungalow - The Business of Rooster Teeth")
+				{
+					episodeInt = GuidStrToInt(guid);
+				}
+				else if (podcast.Name == "The Patch")
+				{
+					episodeInt = GuidStrToInt(guid);
+				}
+				else if (podcast.Name == "Theater Mode AUX")
+				{
+					// These episode numbers (via guids) and release dates are all over the place.
+					// So we just leave as is.
+				}
+				else if (podcast.Name == "Twits and Crits - The League of Extraordinary Jiremen")
+				{
+					var cacTheLeagueRegex = new Regex(@"^(.*): Part (?<episodeNumber>\d+)$");
+					var match = cacTheLeagueRegex.Match(title);
+					if (match.Success)
+					{
+						if (int.TryParse(match.Groups["episodeNumber"].ValueSpan, out int tempEpisodeInt) == true)
+						{
+							episodeInt = tempEpisodeInt;
+							title = title.Replace($": Part {episodeInt}", string.Empty);
+						}
+					}
+				}
+				else if (podcast.Name == "Wrestling With The Week")
+				{
+					if (guid == "54a6de4c-8139-11eb-9432-9f8052e41166")
+					{
+						// 2021-03-10 080000 - S01 E9 - BONUS EPISODE - EXCLUSIVE - Scorpio Sky is the Face of the Revolution. (54a6de4c-8139-11eb-9432-9f8052e41166).mp3
+						episodeInt = -1;
+					}
+				}
 					
 			
 				#endregion
@@ -2027,12 +2183,14 @@ class Program
 						$" - #{episodeInt}",
 						$" -#{episodeInt}",
 						$" #{episodeInt}",
+						$" - #0{episodeInt}",
+						$" #0{episodeInt}",
 						$" # {episodeInt}",
 						$" - [{episodeInt}]",
 						$" [{episodeInt}]",
 						$"- Episode {episodeInt}",
 					};
-
+					
 					foreach (var stringTitleReplacement in stringTitleReplacements)
 					{
 						if (title.Contains(stringTitleReplacement))
@@ -2163,6 +2321,8 @@ class Program
 			{
 				#if DEBUG
 				MaxDegreeOfParallelism = 1,
+				#else
+				MaxDegreeOfParallelism = 8,
 				#endif
 			};
 			await Parallel.ForEachAsync(fileSummaryList, parallelOptions, async (fileSummary, token) =>
@@ -2348,6 +2508,20 @@ class Program
 			"unLOCKED - The Official genLOCK Companion Podcast",
 			"The Most",
 			"The Real Canon",
+			"CHUMP",
+			"Class Of 198X",
+			"Enjoy the Show",
+			"I Have Notes",
+			"Fan Service",
+			"Inside Gaming Daily",
+			"Inside Gaming Podcast",
+			"Murder Room",
+			"Sportsball",
+			"The Bungalow - The Business of Rooster Teeth",
+			"The Patch",
+			"Theater Mode AUX",
+			"Twits and Crits - The League of Extraordinary Jiremen",
+			"Wrestling With The Week",
 			*/
 		};
 		
