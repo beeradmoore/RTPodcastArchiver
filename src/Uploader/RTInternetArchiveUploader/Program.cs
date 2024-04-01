@@ -9,6 +9,7 @@ using System.Web;
 using System.Xml;
 using System.Xml.Linq;
 using RTInternetArchiveUploader;
+using RTPodcastArchiver;
 using RunProcessAsTask;
 using Serilog;
 
@@ -175,14 +176,38 @@ class Program
 		// This is where we used the accessKey and secretKey from above.
 		httpClient.DefaultRequestHeaders.Add("authorization", $"LOW {accessKey}:{secretKey}");
 
-		// This is what we use to map local files to your remote Internet Archive archive.
-		var iaMappings = new List<LocalToInternetArchiveMapping>();
+		// podcasts.json is what we use to map local files to Internet Archive archives.
+		var podcastsJson = Path.Combine(inputPath, "podcasts.json");
+		if (File.Exists(podcastsJson) == false)
+		{
+			Log.Error($"Could not find {podcastsJson}");
+			return 1;
+		}
+		
+		var podcasts = new List<Podcast>();
+
+		using (var fileStream = File.OpenRead(podcastsJson))
+		{
+			var tempPodcasts = JsonSerializer.Deserialize<List<Podcast>>(fileStream);
+			if (tempPodcasts != null)
+			{
+				podcasts.AddRange(tempPodcasts);
+			}
+		}
+
+		if (podcasts.Count == 0)
+		{
+			Log.Error("No podcasts found, exiting.");
+			return 0;
+		}
+		//var iaMappings = new List<LocalToInternetArchiveMapping>();
 
 
 		// If you used RTPodcastArchiver you would put the same basePath here.
-		var iaMappingJsonFile = Path.Combine(inputPath, "ia_mapping.json");
+		//var iaMappingJsonFile = Path.Combine(inputPath, "ia_mapping.json");
 
 		// Load it if it exists.
+		/*
 		if (File.Exists(iaMappingJsonFile))
 		{
 			using (var fileStream = File.OpenRead(iaMappingJsonFile))
@@ -234,13 +259,14 @@ class Program
 				return 1;
 			}
 		}
+		*/
 
 
 		// Used to update the README when new items are added.
 		/*
-		foreach (var iaMapping in iaMappings)
+		foreach (var podcast in podcasts)
 		{
-			Console.WriteLine($"| [{iaMapping.LocalName}](https://archive.org/details/{iaMapping.IAIdentifier}) | Uploading, Validating |");
+			Console.WriteLine($"| [{podcast.Name}](https://archive.org/details/{podcast.IAIdentifier}) | Uploading, Validating |");
 		}
 		*/
 
@@ -248,16 +274,17 @@ class Program
 		
 		// Uploads initial cover for creating new collections.
 		/*
-		foreach (var iaMapping in iaMappings)
+		foreach (var podcast in podcasts)
 		{
+			var localFolder = Path.Combine(archivePath, podcast.Name);
 			Console.WriteLine("\n\n");
-			Console.WriteLine($"{iaMapping.LocalName}");
-			Console.WriteLine($"{iaMapping.LocalFolder}");
-			Console.WriteLine($"{iaMapping.IAIdentifier}");
+			Console.WriteLine($"Name: {podcast.Name}");
+			Console.WriteLine($"Local folder: {localFolder}");
+			Console.WriteLine($"IAIdentifier: {podcast.IAIdentifier}");
 
-			var nameHasFirst = iaMapping.LocalName.Contains("first", StringComparison.OrdinalIgnoreCase);
-			var folderHasFirst = iaMapping.LocalFolder.Contains("first", StringComparison.OrdinalIgnoreCase);
-			var iaHasFirst = iaMapping.IAIdentifier.Contains("first", StringComparison.OrdinalIgnoreCase);
+			var nameHasFirst = podcast.Name.Contains("first", StringComparison.OrdinalIgnoreCase);
+			var folderHasFirst = localFolder.Contains("first", StringComparison.OrdinalIgnoreCase);
+			var iaHasFirst = podcast.IAIdentifier.Contains("first", StringComparison.OrdinalIgnoreCase);
 
 			if (nameHasFirst && folderHasFirst && iaHasFirst)
 			{
@@ -272,8 +299,8 @@ class Program
 				Console.WriteLine("Invalid first");
 			}
 
-			var pngCover = Path.Combine(iaMapping.LocalFolder, "cover.png");
-			var jpgCover = Path.Combine(iaMapping.LocalFolder, "cover.jpg");
+			var pngCover = Path.Combine(localFolder, "cover.png");
+			var jpgCover = Path.Combine(localFolder, "cover.jpg");
 
 			var cover = string.Empty;
 
@@ -295,8 +322,8 @@ class Program
 			try
 			{
 				
-				Console.WriteLine($"{iaMapping.LocalName} - {iaMapping.IAIdentifier}");
-				var processResultsNew = await ProcessEx.RunAsync($"ia", $"upload \"{iaMapping.IAIdentifier}\" \"{cover}\" --metadata=\"title:{iaMapping.LocalName}\" --metadata=\"creator:Rooster Teeth\"  --metadata=\"mediatype:audio\"   --metadata=\"collection:opensource_audio\"  --metadata=\"subject:Rooster Teeth; RoosterTeeth\" ");
+				Console.WriteLine($"{podcast.Name} - {podcast.IAIdentifier}");
+				var processResultsNew = await ProcessEx.RunAsync($"ia", $"upload \"{podcast.IAIdentifier}\" \"{cover}\" --metadata=\"title:{podcast.Name}\" --metadata=\"creator:Rooster Teeth\"  --metadata=\"mediatype:audio\"   --metadata=\"collection:opensource_audio\"  --metadata=\"subject:Rooster Teeth; RoosterTeeth\" ");
 				Console.WriteLine($"Exit code: {processResultsNew.ExitCode}");
 				Debugger.Break();
 				
@@ -355,15 +382,22 @@ class Program
 		var lockObject = new Object();
 
 		// We go through our mappings from top to bottom. To prioritise one over another move it to the top of the file.
-		foreach (var iaMapping in iaMappings)
+		foreach (var podcast in podcasts)
 		{
-			Log.Information($"Reading directory for {iaMapping.LocalName}");
+			if (podcast.IsEnabled == false)
+			{
+				continue;
+			}
+			
+			var localPodcastFolder = Path.Combine(archivePath, podcast.Name);
+
+			Log.Information($"Reading directory for {localPodcastFolder}");
 
 			// Some data we read/create.
-			var podcastRssFile = Path.Combine(iaMapping.LocalFolder, "podcast.rss");
-			var uploadCsvFile = Path.Combine(iaMapping.LocalFolder, "upload.csv");
-			var podcastXmlFile = Path.Combine(iaMapping.LocalFolder, "podcast.xml");
-			var summaryJsonFile = Path.Combine(iaMapping.LocalFolder, "summary.json");
+			var podcastRssFile = Path.Combine(localPodcastFolder, "podcast.rss");
+			var uploadCsvFile = Path.Combine(localPodcastFolder, "upload.csv");
+			var podcastXmlFile = Path.Combine(localPodcastFolder, "podcast.xml");
+			var summaryJsonFile = Path.Combine(localPodcastFolder, "summary.json");
 
 			// This is always created, so if it exists we delete it.
 			if (File.Exists(uploadCsvFile))
@@ -382,20 +416,21 @@ class Program
 					var tempFileSummaryList = JsonSerializer.Deserialize<List<FileSummary>>(fileStream);
 					if (tempFileSummaryList == null)
 					{
-						Log.Error($"Error in {iaMapping.LocalName}: Could not deserialize summary.json.");
+						Log.Error($"Error in {podcast.Name}: Could not deserialize summary.json.");
 						return 1;
 					}
 
 					foreach (var fileSummary in tempFileSummaryList)
 					{
-						fileSummaryDictionary[fileSummary.Guid] = fileSummary;
+						fileSummaryDictionary[$"{podcast.Name}_{fileSummary.Guid}"] = fileSummary;
 					}
 				}
 			}
 			else
 			{
-				Log.Error($"Error in {iaMapping.LocalName}: summary.json was not found.");
+				Log.Error($"Error in {podcast.Name}: summary.json was not found.");
 				//return 1;
+				continue;
 			}
 
 			// We parse the podcast.xml, this is not uploaded however we create a podcast.rss for people to use.
@@ -407,7 +442,7 @@ class Program
 			var rssElement = xmlDoc.DocumentElement?.SelectSingleNode("/rss");
 			if (rssElement == null)
 			{
-				Log.Information($"Error in {iaMapping.LocalName}: Could not find rss element.");
+				Log.Information($"Error in {podcast.Name}: Could not find rss element.");
 				continue;
 			}
 
@@ -429,28 +464,28 @@ class Program
 			var atomLinkHrefAttribute = xmlDoc.DocumentElement?.SelectSingleNode("/rss/channel/atom:link", namespaceManager)?.Attributes?["href"];
 			if (atomLinkHrefAttribute == null)
 			{
-				Log.Error($"Error in {iaMapping.LocalName}: Could not find the atom:link.");
+				Log.Error($"Error in {podcast.Name}: Could not find the atom:link.");
 				continue;
 			}
 
-			atomLinkHrefAttribute.Value = $"https://archive.org/download/{iaMapping.IAIdentifier}/podcast.rss";
+			atomLinkHrefAttribute.Value = $"https://archive.org/download/{podcast.IAIdentifier}/podcast.rss";
 
 			// Same thing, we update the podcast cover to the one on Internet Archive.
 			var imageNode = xmlDoc.DocumentElement?.SelectSingleNode("/rss/channel/image/url");
 			if (String.IsNullOrEmpty(imageNode?.InnerText) == true)
 			{
-				Log.Error($"Error in {iaMapping.LocalName}: Could not find the image url element.");
+				Log.Error($"Error in {podcast.Name}: Could not find the image url element.");
 				continue;
 			}
 
 			var oldImageExtension = Path.GetExtension(new Uri(imageNode.InnerText).AbsolutePath);
-			imageNode.InnerText = $"https://archive.org/download/{iaMapping.IAIdentifier}/cover{oldImageExtension}";
+			imageNode.InnerText = $"https://archive.org/download/{podcast.IAIdentifier}/cover{oldImageExtension}";
 
 			// It also exists under a different tag.
 			var itunesImageAttribute = xmlDoc.DocumentElement?.SelectSingleNode("/rss/channel/itunes:image", namespaceManager)?.Attributes?["href"];
 			if (itunesImageAttribute == null)
 			{
-				Log.Error($"Error in {iaMapping.LocalName}: Could not find the itunes:image element.");
+				Log.Error($"Error in {podcast.Name}: Could not find the itunes:image element.");
 				continue;
 			}
 
@@ -460,7 +495,7 @@ class Program
 			var itemNodes = xmlDoc.DocumentElement?.SelectNodes("/rss/channel/item");
 			if (itemNodes == null)
 			{
-				Log.Error($"Error in {iaMapping.LocalName}: Could not find any episodes to parse.");
+				Log.Error($"Error in {podcast.Name}: Could not find any episodes to parse.");
 				continue;
 			}
 
@@ -471,7 +506,7 @@ class Program
 				var guidNode = item.SelectSingleNode("guid");
 				if (String.IsNullOrEmpty(guidNode?.InnerText) == true)
 				{
-					Log.Error($"Error in {iaMapping.LocalName}: Could not get episode guid.");
+					Log.Error($"Error in {podcast.Name}: Could not get episode guid.");
 					continue;
 
 					// At one point we were removing it, then replacing it, but we should keep it as is.
@@ -480,18 +515,39 @@ class Program
 					//item.RemoveChild(guidNode);
 				}
 
+				var guid = guidNode?.InnerText;
+				if (guid?.Length != 36)
+				{
+					// Convert the number to a Guid, as we did elsewhere.
+					if (int.TryParse(guid, out int guidInt) == true)
+					{
+						var guidBytes = Guid.Empty.ToByteArray();
+						var valueBytes = BitConverter.GetBytes(guidInt);
+						Array.Copy(valueBytes, 0, guidBytes, guidBytes.Length - valueBytes.Length, valueBytes.Length);
+						var newGuid = new Guid(guidBytes);
+						guid = newGuid.ToString("D").ToLower();
+					}
+					else
+					{
+						Log.Error($"Invalid guid, could not convert from int. ({guid})");
+						continue;
+					}
+				}
+				
+				
+
 				// This is the reference mentioned above.
-				var fileSummary = fileSummaryDictionary[guidNode.InnerText];
+				var fileSummary = fileSummaryDictionary?[$"{podcast.Name}_{guid}"];
 				if (fileSummary == null)
 				{
-					Log.Error($"Error in {iaMapping.LocalName}: This item does not exist in our file summary map.");
+					Log.Error($"Error in {podcast.Name}: This item does not exist in our file summary map.");
 					continue;
 				}
 
 				// If the actual length is -1 there may have been a problem with the download.
 				if (fileSummary.ActualLength < 0)
 				{
-					Log.Error($"Error in {iaMapping.LocalName}: This file {fileSummary.LocalFilename} did not have any length, are you sure it exists?");
+					Log.Error($"Error in {podcast.Name}: This file {fileSummary.LocalFilename} did not have any length, are you sure it exists?");
 					continue;
 				}
 
@@ -499,7 +555,7 @@ class Program
 				var enclosureNode = item.SelectSingleNode("enclosure");
 				if (enclosureNode == null)
 				{
-					Log.Error($"Error in {iaMapping.LocalName}: Unable to get enclosure node.");
+					Log.Error($"Error in {podcast.Name}: Unable to get enclosure node.");
 					continue;
 				}
 
@@ -508,12 +564,12 @@ class Program
 
 				if (enclosureUrlAttribute == null || enclosureLengthAttribute == null)
 				{
-					Log.Error($"Error in {iaMapping.LocalName}: enclosure does not have a url or length. This is not expected.");
+					Log.Error($"Error in {podcast.Name}: enclosure does not have a url or length. This is not expected.");
 					continue;
 				}
 
 				// Now we update these to be our new values.
-				enclosureUrlAttribute.Value = $"https://archive.org/download/{iaMapping.IAIdentifier}/{Uri.EscapeDataString(Path.GetFileName(fileSummary.LocalFilename))}";
+				enclosureUrlAttribute.Value = $"https://archive.org/download/{podcast.IAIdentifier}/{Uri.EscapeDataString(Path.GetFileName(fileSummary.LocalFilename))}";
 				enclosureLengthAttribute.Value = fileSummary.ActualLength.ToString();
 			}
 
@@ -524,7 +580,7 @@ class Program
 			}
 
 			// We want to look at (almost) every file in this podcasts local directory and see if we need to upload it.
-			var files = Directory.GetFiles(iaMapping.LocalFolder);
+			var files = Directory.GetFiles(localPodcastFolder);
 
 			// We want to use multiple threads to do this, but we don't want to throw 100 threads at it and make Internet Archive angry at your IP address
 			var parallelOptions = new ParallelOptions()
@@ -532,13 +588,15 @@ class Program
 				MaxDegreeOfParallelism = 8, // cpu go brr
 			};
 
+			var filesToUpload = new List<UploadItem>();
+			
 			await Parallel.ForEachAsync(files, parallelOptions, async (file, token) =>
 			{
 				// What is this individual file name.
 				var filename = Path.GetFileName(file);
 
 				// This is where we expect the file to be.
-				var remotePath = $"https://s3.us.archive.org/{iaMapping.IAIdentifier}/{filename}";
+				var remotePath = $"https://s3.us.archive.org/{podcast.IAIdentifier}/{filename}";
 
 				// Skip some files that are not intended to be uploaded.
 				if (file.EndsWith(".xml", StringComparison.InvariantCultureIgnoreCase) ||
@@ -621,22 +679,22 @@ class Program
 					// Lock as this can happen from multiple threads at the same time.
 					lock (lockObject)
 					{
-						iaMapping.FilesToUpload.Add(new UploadItem(file, remotePath));
+						filesToUpload.Add(new UploadItem(file, remotePath));
 					}
 				}
 			});
 
 			// Ok, now we should know what we need to do, so lets output a summary for this podcast.
 			Log.Information("Summary");
-			Log.Information($"{iaMapping.LocalName} has {iaMapping.FilesToUpload.Count} files to upload.");
+			Log.Information($"{podcast.Name} has {filesToUpload.Count} files to upload.");
 
 			// So lets start the upload if there is anything to upload.
-			if (iaMapping.FilesToUpload.Count > 0)
+			if (filesToUpload.Count > 0)
 			{
 				Log.Information("Uploading");
 				// Give this list a little sorty sort as our files are mostly sorted by date.
-				iaMapping.FilesToUpload.Sort((a, b) => a.LocalPath.CompareTo(b.LocalPath));
-				foreach (var file in iaMapping.FilesToUpload)
+				filesToUpload.Sort((a, b) => a.LocalPath.CompareTo(b.LocalPath));
+				foreach (var file in filesToUpload)
 				{
 					Log.Information($"{file.LocalPath} -> {file.RemotePath}");
 				}
@@ -707,17 +765,18 @@ class Program
 				*/
 
 				
-				/*
+				
 				// Third times a charm?
 				// Using ia upload ClI, but multiple times per podcast.
-				await Parallel.ForEachAsync(iaMapping.FilesToUpload, parallelOptions, async (fileToUpload, token) =>
+				await Parallel.ForEachAsync(filesToUpload, parallelOptions, async (fileToUpload, token) =>
 				{
 					Log.Information($"Uploading: {fileToUpload.LocalPath}");
 
 					try
 					{
-						// TODO: Some files have double quotes in the name, is this a problem with this uploader?
-						var processResults = await ProcessEx.RunAsync($"ia", $"upload {iaMapping.IAIdentifier} \"{fileToUpload.LocalPath}\"");
+						Log.Information($"Attempting CLI upload: ia upload {podcast.IAIdentifier} \"{fileToUpload.LocalPath}\"");
+	
+						var processResults = await ProcessEx.RunAsync($"ia", $"upload {podcast.IAIdentifier} \"{fileToUpload.LocalPath}\"");
 						if (processResults.ExitCode != 0)
 						{
 							var errorString = String.Join("\n", processResults.StandardOutput);
@@ -728,10 +787,9 @@ class Program
 					}
 					catch (Exception err)
 					{
-						Log.Error($"\nERROR: Could not upload {fileToUpload.LocalPath}\n{err.Message}\n");
+						Log.Error(err, $"\nCould not upload {fileToUpload.LocalPath}\n{err.Message}\n");
 					}
 				});
-				*/
 			}
 			else
 			{
