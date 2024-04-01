@@ -99,8 +99,8 @@ class Program
 		// We do web requests with accessKey and secretKey for the IA-s3 like API.
 		// If you have not configured ia please see https://archive.org/developers/internetarchive/quickstart.html
 		// We will attempt to load them below, but feel free to skip that by specifying them here.
-		var accessKey = String.Empty;
-		var secretKey = String.Empty;
+		var accessKey = Environment.GetEnvironmentVariable("IAS3_ACCESS_KEY") ?? String.Empty;
+		var secretKey = Environment.GetEnvironmentVariable("IAS3_SECRET_KEY") ?? String.Empty;
 
 		if (String.IsNullOrEmpty(accessKey) == true || String.IsNullOrEmpty(secretKey) == true)
 		{
