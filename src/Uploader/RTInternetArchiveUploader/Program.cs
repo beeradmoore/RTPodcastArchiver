@@ -245,6 +245,70 @@ class Program
 		*/
 
 		
+		
+		// Uploads initial cover for creating new collections.
+		/*
+		foreach (var iaMapping in iaMappings)
+		{
+			Console.WriteLine("\n\n");
+			Console.WriteLine($"{iaMapping.LocalName}");
+			Console.WriteLine($"{iaMapping.LocalFolder}");
+			Console.WriteLine($"{iaMapping.IAIdentifier}");
+
+			var nameHasFirst = iaMapping.LocalName.Contains("first", StringComparison.OrdinalIgnoreCase);
+			var folderHasFirst = iaMapping.LocalFolder.Contains("first", StringComparison.OrdinalIgnoreCase);
+			var iaHasFirst = iaMapping.IAIdentifier.Contains("first", StringComparison.OrdinalIgnoreCase);
+
+			if (nameHasFirst && folderHasFirst && iaHasFirst)
+			{
+				Console.WriteLine("Valid first");
+			}
+			else if (nameHasFirst == false && folderHasFirst == false && iaHasFirst == false)
+			{
+				Console.WriteLine("Valid non-first");
+			}
+			else
+			{
+				Console.WriteLine("Invalid first");
+			}
+
+			var pngCover = Path.Combine(iaMapping.LocalFolder, "cover.png");
+			var jpgCover = Path.Combine(iaMapping.LocalFolder, "cover.jpg");
+
+			var cover = string.Empty;
+
+			if (File.Exists(pngCover))
+			{
+				cover = pngCover;
+				Console.WriteLine("Cover: png");
+			}
+			else if (File.Exists(jpgCover))
+			{
+				cover = jpgCover;
+				Console.WriteLine("Cover: jpg");
+			}
+			else
+			{
+				Console.WriteLine("Cover: Invalid cover");
+			}
+
+			try
+			{
+				
+				Console.WriteLine($"{iaMapping.LocalName} - {iaMapping.IAIdentifier}");
+				var processResultsNew = await ProcessEx.RunAsync($"ia", $"upload \"{iaMapping.IAIdentifier}\" \"{cover}\" --metadata=\"title:{iaMapping.LocalName}\" --metadata=\"creator:Rooster Teeth\"  --metadata=\"mediatype:audio\"   --metadata=\"collection:opensource_audio\"  --metadata=\"subject:Rooster Teeth; RoosterTeeth\" ");
+				Console.WriteLine($"Exit code: {processResultsNew.ExitCode}");
+				Debugger.Break();
+				
+			}
+			catch (Exception err)
+			{
+				Console.WriteLine($"ERROR: {err.Message}");
+				Debugger.Break();
+			}
+		}
+		*/
+
 
 		// Used to try make some things thread safe.
 		var lockObject = new Object();
