@@ -395,7 +395,7 @@ class Program
 			else
 			{
 				Log.Error($"Error in {iaMapping.LocalName}: summary.json was not found.");
-				return 1;
+				//return 1;
 			}
 
 			// We parse the podcast.xml, this is not uploaded however we create a podcast.rss for people to use.
