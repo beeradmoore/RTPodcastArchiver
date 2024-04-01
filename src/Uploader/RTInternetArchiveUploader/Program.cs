@@ -235,6 +235,17 @@ class Program
 			}
 		}
 
+
+		// Used to update the README when new items are added.
+		/*
+		foreach (var iaMapping in iaMappings)
+		{
+			Console.WriteLine($"| [{iaMapping.LocalName}](https://archive.org/details/{iaMapping.IAIdentifier}) | Uploading, Validating |");
+		}
+		*/
+
+		
+
 		// Used to try make some things thread safe.
 		var lockObject = new Object();
 
