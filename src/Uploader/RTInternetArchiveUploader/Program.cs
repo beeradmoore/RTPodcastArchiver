@@ -798,8 +798,9 @@ class Program
 						var processResults = await ProcessEx.RunAsync($"ia", $"upload {podcast.IAIdentifier} \"{fileToUpload.LocalPath}\"");
 						if (processResults.ExitCode != 0)
 						{
-							var errorString = String.Join("\n", processResults.StandardOutput);
-							throw new Exception(errorString);
+							var errorString1 = String.Join("\n", processResults.StandardOutput);
+							var errorString2 = String.Join("\n", processResults.StandardError);
+							throw new Exception($"{errorString1}\n{errorString2}");
 						}
 
 						Log.Information($"Success: {fileToUpload.LocalPath}");
