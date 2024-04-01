@@ -10,6 +10,12 @@ public class Podcast
 	[JsonPropertyName("url")]
 	public string Url { get; set; } = String.Empty;
 
+	[JsonPropertyName("ia_identifier")]
+	public string IAIdentifier { get; set; } = String.Empty;
+
+	[JsonPropertyName("enabled")]
+	public bool IsEnabled { get; set; } = false;
+	
 	public Podcast()
 	{
 		
@@ -18,5 +24,6 @@ public class Podcast
 	public Podcast(string name)
 	{
 		Name = name;
+		IsEnabled = true;
 	}
 }

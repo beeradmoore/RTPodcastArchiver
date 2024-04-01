@@ -274,12 +274,18 @@ class Program
 			return 0;
 		}
 
+		//podcasts.Sort((a, b) => a.Name.CompareTo(b.Name));
 		
 		var allFileNames = new List<string>();
 		
 		// Go through each podcast.
 		foreach (var podcast in podcasts)
 		{
+			if (podcast.IsEnabled == false)
+			{
+				continue;
+			}
+			
 			if (loadPodcastsFromCache == false)
 			{
 				await Task.Delay(500);
