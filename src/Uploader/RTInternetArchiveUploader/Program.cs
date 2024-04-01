@@ -101,8 +101,8 @@ class Program
 		// We do web requests with accessKey and secretKey for the IA-s3 like API.
 		// If you have not configured ia please see https://archive.org/developers/internetarchive/quickstart.html
 		// We will attempt to load them below, but feel free to skip that by specifying them here.
-		var accessKey = Environment.GetEnvironmentVariable("IAS3_ACCESS_KEY") ?? String.Empty;
-		var secretKey = Environment.GetEnvironmentVariable("IAS3_SECRET_KEY") ?? String.Empty;
+		var accessKey = String.Empty; //Environment.GetEnvironmentVariable("IAS3_ACCESS_KEY") ?? String.Empty;
+		var secretKey = String.Empty; //Environment.GetEnvironmentVariable("IAS3_SECRET_KEY") ?? String.Empty;
 
 		if (String.IsNullOrEmpty(accessKey) == true || String.IsNullOrEmpty(secretKey) == true)
 		{
@@ -121,10 +121,28 @@ class Program
 					return 1;
 				}
 
-				var tempIaConfigFile = Path.Combine(homePath, ".config", "internetarchive", "ia.ini");
+				var configPath = Path.Combine(homePath, ".config", "internetarchive");
+				var tempIaConfigFile = Path.Combine(configPath, "ia.ini");
 				if (File.Exists(tempIaConfigFile))
 				{
 					iaConfigFile = tempIaConfigFile;
+				}
+				else
+				{
+					var envAccessKey = Environment.GetEnvironmentVariable("IAS3_ACCESS_KEY") ?? String.Empty;
+					var envSecretKey = Environment.GetEnvironmentVariable("IAS3_SECRET_KEY") ?? String.Empty;
+
+
+					if (Directory.Exists(configPath) == false)
+					{
+						Directory.CreateDirectory(configPath);
+					}
+					
+					if (String.IsNullOrEmpty(envAccessKey) == false && String.IsNullOrEmpty(envSecretKey) == false)
+					{
+						File.WriteAllText(tempIaConfigFile, $"[s3]\naccess = {envAccessKey}\nsecret = {envSecretKey}\n");
+						iaConfigFile = tempIaConfigFile;
+					}
 				}
 			}
 
