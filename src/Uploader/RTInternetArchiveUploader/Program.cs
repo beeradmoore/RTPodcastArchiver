@@ -310,6 +310,47 @@ class Program
 		*/
 
 
+		// This was used to create a list of old files to delete.
+		/*
+		var deleteList = Path.Combine(archivePath, "ia_to_delete.txt");
+		using (var fileStream = File.Create(deleteList))
+		{
+			using (var streamWriter = new StreamWriter(fileStream))
+			{
+				foreach (var iaMapping in iaMappings)
+				{
+					try
+					{
+						var processResultsNew = await ProcessEx.RunAsync($"ia", $"list \"{iaMapping.IAIdentifier}\"");
+						if (processResultsNew.ExitCode == 0)
+						{
+							var mp3ToDeletes = processResultsNew.StandardOutput.Where(x => x.EndsWith(".mp3", StringComparison.OrdinalIgnoreCase));
+							foreach (var mp3ToDelete in mp3ToDeletes)
+							{
+								if (mp3ToDelete.Contains("\""))
+								{
+									Debugger.Break();
+								}
+								streamWriter.WriteLine($"ia delete {iaMapping.IAIdentifier} \"{mp3ToDelete}\"");
+							}
+						}
+						else
+						{
+							Console.WriteLine($"Exit code: {processResultsNew.ExitCode}");
+							Debugger.Break();
+						}
+
+					}
+					catch (Exception err)
+					{
+						Console.WriteLine($"ERROR: {err.Message}");
+						Debugger.Break();
+					}
+				}
+			}
+		}
+		*/
+
 		// Used to try make some things thread safe.
 		var lockObject = new Object();
 
