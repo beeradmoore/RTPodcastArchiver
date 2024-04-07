@@ -814,7 +814,6 @@ class Program
 			else
 			{
 				Log.Information("No files to upload.");
-				return 0;
 			}
 		}
 
